@@ -12,6 +12,7 @@
     "cytoscape": "^3.30.4",
     "frontend": "file:",
     "react": "^18.3.1",
+    "react-data-grid": "^7.0.0-beta.47",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.1",
     "react-scripts": "5.0.1",

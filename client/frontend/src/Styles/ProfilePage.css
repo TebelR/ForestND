@@ -1,34 +1,14 @@
 @import 'colors.css';
 
 .container{
-    width: 80%;
-    height: 80vh;
-    
+
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
-    border: 1px black solid;
+
 }
 
-
-.header{
-    width: 100px;
-    height:100px;
-    font-size: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 50%;
-    border: 1px black solid;
-    border-radius: 100px;
-}
-
-.tabs{
-    display: flex;
-}
 
 .tabs ul{
     display: flex;
@@ -37,27 +17,205 @@
     padding: 0;
 }
 
-.tabs li{
-    background-color: var(--secondary-color);
-    padding: 10px 20px;
-    margin-right: 5px;
-    border-radius: 10px;
-    border: 10px solic white;
-}
 
 .tabs a{
-    color: var(--white);
+    color: var(--blue);
+    font-size: 12px;
+    display: flex;
     text-decoration: none;
+    border: 1px solid var(--blue);
+    padding: 5px 15px;
+    margin-right: 1px;
+    border-radius: 5px;
 }
 
-.content{
-    width: 100%;
+.tabs a:hover{
+    color: var(--white);
+    background-color: var(--blue);
+}   
+
+.tabs li:active{
+    color: var(--white);
+    background-color: var(--blue);
+}
+.tabs li.active a {
+    color: var(--white);
+    background-color: var(--blue);
+}
+
+/*dealing with the three sections found in profile page */
+.userProfile{
+    display: flex;
     height: 100%;
+    width: 100%;
+    
+    border-radius: 10px;
+}
+.child{
+    
+    width: 90%;
+    height: 100%;
+    border-radius: 10px;
+    
+}
+
+
+
+.content{
+    flex: 1; 
+    width:80vw;
+    height:70vh;
+    display: flex;
     border: 1px solid black;
+    border-radius: 10px;
+
+    background-color: var(--tertiary-color);
+    
+}
+
+.memberInfo{
+    padding-right: 50px;
+    padding-left:10px ;
+}
+
+/*dealing with member photo found in userProfile*/
+.photoContainer{
+    display: flex; 
+    justify-content: center; 
+    
+}
+
+
+.memberPhoto{
+    margin-top: 40px;
+    position: relative; 
+    height: 300px; 
+    width: 250px;
+    display: flex; align-items: center;
+    justify-content: center; 
+    align-items: center; 
+    
+    
 }
 
 .memberPhoto img{
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
+    height: 100%; 
+    border-radius: 200px;
 }
+
+.status{
+    position: absolute;
+    bottom: 10px; 
+    right: 10px;
+    width: 30px; 
+    height: 30px; 
+
+}
+
+
+.status img{
+    width: 150%; 
+    height: 150%; 
+}
+
+
+.ContactInfo{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto; /* Create 2 equal columns */
+    gap: 20px; /* Optional: space between items */
+}
+
+/*dealing with member information found in userProfile*/
+.InitialInfo {
+    display: grid; /* Enable grid layout */
+    grid-template-columns: auto auto; /* Create 2 equal columns */
+    gap: 20px; /* Optional: space between items */
+}
+h1{
+    justify-self: center;
+    align-self: center;
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid var(--secondary-color);
+    font-weight: 200;
+
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    
+}
+
+
+/*Employment information found in userProfile*/
+.EmploymentInfo{
+    height: none;
+    padding-right:10px ;
+}
+
+.title{
+    position: absolute;
+    top:0%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white);
+    font-weight: bolder;
+    font-size: xx-large;
+}
+
+.QualificationInfo{
+    height: 100vw;
+    width: 1000px;
+    background-color: aqua;
+    padding-right:10px ;
+}
+
+.data-grid {
+  flex: 1;
+  resize: none;
+  overflow: auto;
+  height:100%; 
+  width: 100%;
+}
+
+.data-grid::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #f1f1f1;
+}
+
+.data-grid::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+
+.rdg-row {
+    background-color: #f7f7f7; /* Light gray background */
+    color: black;
+  }
+  
+  /* Add background color to columns */
+  .data-grid {
+    /* Change scrollbar background */
+    ::-webkit-scrollbar {
+      background-color: #ccc; /* Light gray background */
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background-color: #666; /* Dark gray background */
+    }
+  }
+
+  .Courses{
+    position: absolute; /* Position it absolutely within the content div */
+    left: 0; /* Align to the left */
+    width: 100%; /* Fill the width */
+    height: 100%; /* Fill the height */
+    background-color: lightblue;
+    resize: none;
+  }

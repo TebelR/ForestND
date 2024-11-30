@@ -1,17 +1,17 @@
 .searchBar{
-    
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: var(--white);
     display: flex;
     height: 30px;
     width: 200px;
     position: absolute;
-    top: 50px;
-    right: 50px;
+    top: -10%;
+    right:-100px;
     align-items: center;
     margin: 0px;
     padding-left:5px;
     font-size: 16px;
+    border: 1px solid var(--black);
 }
 
 
@@ -22,9 +22,10 @@ svg{
 
 input{
     width: 100px;
-    border: none;
-    margin: 0px;
+    margin: 2px;
+    height: 80%;
     padding-left: 5px;
+    border: 0px;
 
 }
 

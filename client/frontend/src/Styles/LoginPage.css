@@ -1,0 +1,70 @@
+@import 'colors.css';
+.LoginBody{
+    height: 100%;
+    width: 100%;
+    background-color: var(--black) ;
+}
+
+
+.Login{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.Login form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.loginForm input{
+    width: 140%;
+    height: 30px;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    margin: 10px;
+    padding-left: 10px;
+}
+
+button{
+    width: 100%;
+    height: 30px;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    margin: 10px;
+    padding-left: 10px;
+    background-color: var(--blue);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.loginTitle h1{
+    color: var(--black);
+    font-size: xx-large ;
+    font-weight: 500;
+}
+.forgotPassword{
+   width: 100%;
+   text-align: right;
+}
+
+.forgotPassword a{
+    text-decoration: none;
+    color: var(--black);
+    cursor: pointer;
+    font-size: small;
+}

@@ -1,57 +1,128 @@
 import React, { useState } from 'react';
-import UserProfile from '../components/UserProfile';
+import UserProfile from '../components/profileTabPage/UserProfile';
+import Employment from '../components/profileTabPage/Employment';
+import Qualifications from '../components/profileTabPage/Qualifications';
+import ARR from '../components/profileTabPage/ARR';
 import '../Styles/ProfilePage.css';
+
 import userPhoto from '../assets/profile.png';
+import SearchBar from '../components/SearchBar';
+import Courses from '../components/profileTabPage/Courses';
+
+
+
 const data = {
-  "serviceNum": "X0005",
-  "name": "test",
-  "rank": "Private",
-  "enrollmentDate": "2002-01-01",
-  "drivingLicenseExpirationDate": "2023-01-01",
-  "dob": "1980-01-01",
-  "qualificationPacketID": 6,
-  "coursePacketID": 6,
-  "address": "test",
-  "email": "test",
-  "phone": "test",
-  "dlnPackageID": 6,
-  "position": "Det Mbr",
-  "userPhoto": "../assets/profile.png"
+  serviceNum: "X0005",
+  name: "test",
+  rank: "Private",
+  dob: "1980-01-01",
+  position: "Det Mbr",
+  status: "Active",
+  unit: "test",
+  Unit_UIC: "test", 
+  Trade: "Signal Op",
+  phone: "123-456-7890",
+  MOSID: "test",
+  MOS: "test",
+  Position: "Rad Det 2",
+  // Add other data properties as needed
 };
+const columns = [
+  //Date aquired
+  //Expiry, serial , Description, Approved By
+  { key: 'title', name: 'Title' },
+  { key: 'dateAquired', name: 'Date aquired' },
+  { key: 'expiry', name: 'Expiry' },
+  { key: 'serial', name: 'Serial' },
+  { key: 'description', name: 'Description' },
+  { key: 'approvedBy', name: 'Approved By' },
+];
+
+const rows = [
+  { title: 'Driver Wheel common', dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem   ipusum     lorem ipusum', approvedBy: 'John Doe' },
+  { title:'Basic first Aid' , dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem ipusum  lorem ipusum', approvedBy: 'John Doe' },
+  { title: 'Driver Wheel common', dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem   ipusum     lorem ipusum', approvedBy: 'John Doe' },
+  { title:'Basic first Aid' , dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem ipusum  lorem ipusum', approvedBy: 'John Doe' },
+  { title: 'Driver Wheel common', dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem   ipusum     lorem ipusum', approvedBy: 'John Doe' },
+  { title:'Basic first Aid' , dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem ipusum  lorem ipusum', approvedBy: 'John Doe' },
+  { title: 'Driver Wheel common', dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem   ipusum     lorem ipusum', approvedBy: 'John Doe' },
+  { title:'Basic first Aid' , dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem ipusum  lorem ipusum', approvedBy: 'John Doe' },
+  { title: 'Driver Wheel common', dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem   ipusum     lorem ipusum', approvedBy: 'John Doe' },
+  { title:'Basic first Aid' , dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem ipusum  lorem ipusum', approvedBy: 'John Doe' },
+  { title: 'Driver Wheel common', dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem   ipusum     lorem ipusum', approvedBy: 'John Doe' },
+  { title:'Basic first Aid' , dateAquired: '2023-01-01', expiry: '2024-01-01', serial: '1234', description: 'lorem ipusum lorem ipusum  lorem ipusum', approvedBy: 'John Doe' },
+];
+
+
 
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState('Profile');
+
   const renderContent = () => {
     switch (activeTab) {
       case 'Profile':
         return (
-          <UserProfile 
-            userPhoto={userPhoto}
-            rank={data.rank} 
-            dob={data.dob}
-            Fname={data.name}
-            Lname={data.name}
-            Mname={data.name}
-            serviceNum={data.serviceNum}
-            phone={data.phone}
-            email={data.email} 
-            address={data.address}
-            postalCode={data.address}
-            city={data.address}
-            Province={data.address}
-            
-          />
+          <div className='content'>
+            <UserProfile 
+              status={data.status}
+              userPhoto={userPhoto}
+              rank={data.rank}
+              dob={data.dob}
+              Fname={data.name}
+              Lname={data.name}
+              Mname={data.name}
+              serviceNum={data.serviceNum}
+              phone={data.phone}
+              email={data.email} 
+              address={data.address}
+            />
+          </div>
         );
-      case 'Employment':
-        return <div>Employment Content</div>;
-      case "APR's":
-        return <div>APR's Content</div>;
+      case "ARR's":
+        return <div className='content'>
+          <ARR 
+          columns={
+            columns
+          }
+          rows={
+            rows
+          }
+          />
+        </div>;
       case 'Qualifications':
-        return <div>Qualifications Content</div>;
+        return <div className='content'> 
+        <Qualifications  
+        columns={
+          columns
+        }
+        rows={
+          rows
+        }
+        />
+        </div>;
       case 'Courses':
-        return <div>Courses Content</div>;
+        return <div className='content'>
+          <Courses 
+          columns={
+            columns
+          }
+          rows={
+            rows
+          }
+          />
+        </div>;
       case 'PaCE':
         return <div>PaCE Content</div>;
+        case 'Employment':
+          return <div className='content'>
+            <Employment
+              unit={data.unit}
+              Unit_UIC={data.Unit_UIC}
+              Trade={data.Trade}
+              MOSID={data.MOSID}
+              Position={data.Position}
+              />
+          </div>;
       default:
         return <div>Select a tab</div>;
     }
@@ -59,27 +130,23 @@ function ProfilePage() {
 
   return (
     <div className='container'>
+      <SearchBar />
       <div className='header'>
-        <h1>{
-          data.position}</h1>
+        <h1 className='title'>{data.position}</h1>
       </div>  
       <div className='tabs'>
         <ul>
-          {/* Update the active tab on click */}
-          <li onClick={() => setActiveTab('Profile')}><a href="#">Profile</a></li>
-          <li onClick={() => setActiveTab('Employment')}><a href="#">Employment</a></li>
-          <li onClick={() => setActiveTab("APR's")}><a href="#">APR's</a></li>
-          <li onClick={() => setActiveTab('Qualifications')}><a href="#">Qualifications</a></li>
-          <li onClick={() => setActiveTab('Courses')}><a href="#">Courses</a></li>
-          <li onClick={() => setActiveTab('PaCE')}><a href="#">PaCE</a></li>
+          {['Profile', "ARR's", 'Employment','Qualifications', 'Courses', 'PaCE'].map(tab => (
+            <li key={tab} className={activeTab === tab ? 'active' : ''} onClick={() => setActiveTab(tab)}>
+              <a href="#">{tab}</a>
+            </li>
+          ))}
         </ul>
       </div>
 
       <div className='content'>
         <div className='Profile'>
-          {renderContent()} {
-
-          }
+          {renderContent()}
         </div>
       </div>
     </div>
