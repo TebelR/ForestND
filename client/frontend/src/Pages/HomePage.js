@@ -1,9 +1,11 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import '../Styles/HomePage.css'
 
 function HomePage() {
   return (
-    <div>Home</div>
+    <div className='HomePage'>
+      hellorddd
+    </div>
   )
 }
 
