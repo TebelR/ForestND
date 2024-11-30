@@ -5,7 +5,8 @@
         "serviceNum": "X0000",
         "position": "test",
         "description": "test",
-        "upEdgeID": 1
+        "upEdgeID": 1,
+        "level": 0
     },
     {
         "nodeID": 2,
@@ -13,7 +14,8 @@
         "serviceNum": "X0001",
         "position": "test",
         "description": "test",
-        "upEdgeID": 2
+        "upEdgeID": 2,
+        "level": 0.1
     },
     {
         "nodeID": 3,
@@ -21,7 +23,8 @@
         "serviceNum": "X0002",
         "position": "test",
         "description": "test",
-        "upEdgeID": 3
+        "upEdgeID": 3,
+        "level": 0.2
     },
     {
         "nodeID": 4,
@@ -29,7 +32,8 @@
         "serviceNum": "X0003",
         "position": "test",
         "description": "test",
-        "upEdgeID": 4
+        "upEdgeID": 4,
+        "level": 0.3
     },
     {
         "nodeID": 5,
@@ -37,7 +41,8 @@
         "serviceNum": "X0004",
         "position": "test",
         "description": "test",
-        "upEdgeID": 5
+        "upEdgeID": 5,
+        "level": 0.3
     },
     {
         "nodeID": 6,
@@ -45,6 +50,16 @@
         "serviceNum": "X0005",
         "position": "test",
         "description": "test",
-        "upEdgeID": 6
+        "upEdgeID": 6,
+        "level": 0.3
+    },
+    {
+        "nodeID": 7,
+        "snapshotID": 2,
+        "serviceNum": "X0006",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 6,
+        "level": 0.2
     }
 ]

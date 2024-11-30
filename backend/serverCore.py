@@ -31,6 +31,9 @@ def getNodes():
 @app.route('/api/v0/findEdges', methods=['GET'])
 def getEdges():
     snapshotId = request.args.get('snapshotId')
+    edges = db.getEdges(snapshotId)
+    for edge in edges:
+        edge["edgeID"] = edge["edgeID"]*-1 #since we can't have nodes and edges having the same id in the graph
     return jsonify(db.getEdges(snapshotId))
 
 @app.route('/api/v0/getLastSnap', methods=['GET'])

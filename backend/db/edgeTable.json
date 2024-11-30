@@ -2,37 +2,37 @@
     {
         "edgeID": 1,
         "snapshotID": 2,
-        "startNodeID": 2,
-        "endNodeID": 1
+        "startNodeID": 1,
+        "endNodeID": 2
     },
     {
         "edgeID": 2,
         "snapshotID": 2,
-        "startNodeID": 3,
-        "endNodeID": 2
+        "startNodeID": 2,
+        "endNodeID": 3
     },
     {
         "edgeID": 3,
         "snapshotID": 2,
-        "startNodeID": 4,
-        "endNodeID": 3
+        "startNodeID": 3,
+        "endNodeID": 4
     },
     {
         "edgeID": 4,
         "snapshotID": 2,
-        "startNodeID": 5,
-        "endNodeID": 4
+        "startNodeID": 3,
+        "endNodeID": 5
     },
     {
         "edgeID": 5,
         "snapshotID": 2,
-        "startNodeID": 5,
-        "endNodeID": 4
+        "startNodeID": 3,
+        "endNodeID": 6
     },
     {
         "edgeID": 6,
         "snapshotID": 2,
-        "startNodeID": 6,
-        "endNodeID": 5
+        "startNodeID": 2,
+        "endNodeID": 7
     }
 ]
