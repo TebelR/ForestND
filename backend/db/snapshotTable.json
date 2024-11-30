@@ -1,0 +1,27 @@
+[
+    {
+        "snapshotId": 1,
+        "familyId": 1,
+        "creationDate": "2022-01-01 00:00:00"
+    },
+    {
+        "snapshotId": 2,
+        "familyId": 1,
+        "creationDate": "2022-01-02 00:00:00"
+    },
+    {
+        "snapshotId": 3,
+        "familyId": 2,
+        "creationDate": "2022-01-03 00:00:00"
+    },
+    {
+        "snapshotId": 1,
+        "familyId": 2,
+        "creationDate": "2022-01-10 00:00:00"
+    },
+    {
+        "snapshotId": 1,
+        "familyId": 3,
+        "creationDate": "2022-01-21 00:00:00"
+    }
+]

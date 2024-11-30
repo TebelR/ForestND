@@ -1,0 +1,50 @@
+[
+    {
+        "nodeID": 1,
+        "snapshotID": 1,
+        "serviceNum": "X0000",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 1
+    },
+    {
+        "nodeID": 2,
+        "snapshotID": 1,
+        "serviceNum": "X0001",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 2
+    },
+    {
+        "nodeID": 3,
+        "snapshotID": 1,
+        "serviceNum": "X0002",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 3
+    },
+    {
+        "nodeID": 4,
+        "snapshotID": 1,
+        "serviceNum": "X0003",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 4
+    },
+    {
+        "nodeID": 5,
+        "snapshotID": 1,
+        "serviceNum": "X0004",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 5
+    },
+    {
+        "nodeID": 6,
+        "snapshotID": 1,
+        "serviceNum": "X0005",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 6
+    }
+]
