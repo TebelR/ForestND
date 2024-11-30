@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask import Flask, request
 from flask_cors import CORS
-
+from datetime import datetime
 from db.databaseStub import DatabaseStub
 
 app = Flask(__name__)
@@ -31,7 +31,36 @@ def getNodes():
 @app.route('/api/v0/findEdges', methods=['GET'])
 def getEdges():
     snapshotId = request.args.get('snapshotId')
+    edges = db.getEdges(snapshotId)
+    for edge in edges:
+        edge["edgeID"] = edge["edgeID"]*-1 #since we can't have nodes and edges having the same id in the graph
     return jsonify(db.getEdges(snapshotId))
+
+@app.route('/api/v0/getLastSnap', methods=['GET'])
+def getLastSnap():
+    
+    familyId = request.args.get('familyId')
+    # print("Retrieving last snapshot for familyId " + familyId)
+    snapshots = db.getSnapshots(familyId)
+    #now get the snapshot with the most recent creationDate
+    targetId = "0"
+    maxDate = datetime.strptime("0001-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
+    for snapshot in snapshots:
+        comparableDate = datetime.strptime(snapshot["creationDate"], '%Y-%m-%d %H:%M:%S')
+        if(comparableDate > maxDate):
+            targetId = str(snapshot["snapshotId"])
+            maxDate = comparableDate
+    snapshotId = targetId
+
+    # print("Returning snapshotId " + str(snapshotId))
+    # snapshot = db.getSnapshot(snapshotId)
+    # print(snapshot)
+
+    output = jsonify(db.getSnapshot(snapshotId))
+
+    return output
+
+
 
 
 
@@ -62,6 +91,8 @@ def createSnapshot():
 
 
 
+
+
 @app.route('/api/v0/deleteFamily', methods=['DELETE'])
 def deleteFamily():
     familyId = request.args.get('familyId')
@@ -87,7 +118,9 @@ def deleteSnapshot():
 @app.route('/api/v0/shutdown', methods=['POST'])
 def shutdown():
     db.shutdown()
-    return jsonify({"success": "Server shutdown"}), 200
+
+
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
+    app.run(debug=True, threaded=True, host='127.0.0.1', port=5000)#configure port
+    print("Server started")
