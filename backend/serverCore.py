@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask import Flask, request
 from flask_cors import CORS
-
+from datetime import datetime
 from db.databaseStub import DatabaseStub
 
 app = Flask(__name__)
@@ -35,18 +35,27 @@ def getEdges():
 
 @app.route('/api/v0/getLastSnap', methods=['GET'])
 def getLastSnap():
+    
     familyId = request.args.get('familyId')
+    # print("Retrieving last snapshot for familyId " + familyId)
     snapshots = db.getSnapshots(familyId)
     #now get the snapshot with the most recent creationDate
-    minId = 0
-    minDate = 0
+    targetId = "0"
+    maxDate = datetime.strptime("0001-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
     for snapshot in snapshots:
-        if(snapshot["creationDate"] > minDate):
-            minId = snapshot["snapshotId"]
-            minDate = snapshot["creationDate"]
-    snapshotId = minId
+        comparableDate = datetime.strptime(snapshot["creationDate"], '%Y-%m-%d %H:%M:%S')
+        if(comparableDate > maxDate):
+            targetId = str(snapshot["snapshotId"])
+            maxDate = comparableDate
+    snapshotId = targetId
 
-    return jsonify(db.getSnapshot(snapshotId))
+    # print("Returning snapshotId " + str(snapshotId))
+    # snapshot = db.getSnapshot(snapshotId)
+    # print(snapshot)
+
+    output = jsonify(db.getSnapshot(snapshotId))
+
+    return output
 
 
 
@@ -106,7 +115,9 @@ def deleteSnapshot():
 @app.route('/api/v0/shutdown', methods=['POST'])
 def shutdown():
     db.shutdown()
-    exit(0)
 
-if name == 'main':
+
+
+if __name__ == '__main__':
     app.run(debug=True, threaded=True, host='127.0.0.1', port=5000)#configure port
+    print("Server started")

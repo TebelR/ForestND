@@ -5,49 +5,43 @@ import "../Styles/commdBranch.css";
 import axios from 'axios';
 
 const CommdBranch = () => {
-   let treeData = [];
-   axios.get('http://localhost:5000/api/v0/getLastSnap$familyId=1').then(res => {
-      treeData = res.data
-   }).catch(err => {
-      console.log(err)
-      alert("Error while retrieving tree data")
-   })
 
-   let nodeData = [];
-   axios.get('http://localhost:5000/api/v0/findNodes$snapshotId=' + treeData[0]["snapshotId"]).then(res => {
-      nodeData = res.data
-   }).catch(err => {
-      console.log(err)
-      alert("Error while retrieving node data")
-   })
+   //put graph data in state
+   const [formattedNodes, setFormattedNodes] = React.useState([]);
+   const [formattedEdges, setFormattedEdges] = React.useState([]);
 
-   let edgeData = [];
-   axios.get('http://localhost:5000/api/v0/findEdges$snapshotId=' + treeData[0]["snapshotId"]).then(res => {
-      edgeData = res.data
-   }).catch(err => {
-      console.log(err)
-      alert("Error while retrieving edge data")
-   })
+   //fetch graph data on first render
+   useEffect(() => {
+      async function fetchData() {
+         const graphData = await fetchTreeData();
+         const nodeData = graphData[1];
+         const edgeData = graphData[2];
 
-   let formattedNodes = nodeData.map(node => {
-      return {
-         data: {
-            id: node["nodeID"],
-            name: node["serviceNum"]
-         }
+         const formattedNodes = nodeData.map(node => ({
+            data: {
+               id: node["nodeID"],
+               name: node["serviceNum"]
+            }
+         }));
+
+         const formattedEdges = edgeData.map(edge => ({
+            data: {
+               id: edge["edgeID"],
+               source: edge["startNodeID"],
+               target: edge["endNodeID"]
+            }
+         }));
+
+         setFormattedNodes(formattedNodes);
+         setFormattedEdges(formattedEdges);
       }
-   })
 
-   let formattedEdges = edgeData.map(edge => {
-      return {
-         data: {
-            id: edge["edgeID"],
-            source: edge["startNodeID"],
-            target: edge["endNodeID"]
-         }
-      }
-   })
+      //actual function call
+      fetchData();
+   }, []);
 
+
+   //Second render of the graph actually builds the graph
    useEffect(() => {
       let cy = cytoscape({
          container: document.querySelector('.commdBranch'),
@@ -101,7 +95,7 @@ const CommdBranch = () => {
             transform: function (node, position) { return position; } // transform a given node position. Useful for changing flow direction in discrete layouts
          }
       });
-   }, []);
+   }, [formattedNodes, formattedEdges]);
 
    return (
       <div className='commdBranch'>
@@ -109,5 +103,40 @@ const CommdBranch = () => {
       </div>
    )
 };
+
+
+//This talks to the backend through API calls
+async function fetchTreeData() {
+   let treeData;
+   try {
+      const response = await axios.get('http://localhost:5000/api/v0/getLastSnap', { params: { familyId: 1 } });
+      treeData = response.data;//JSON.stringify(response.data, null, 2)
+
+   } catch (err) {
+      console.log(err)
+      alert("Error while retrieving tree data")
+   }
+
+   let nodeData;
+   try {
+      const response = await axios.get('http://localhost:5000/api/v0/findNodes', { params: { snapshotId: treeData.snapshotId } });
+      nodeData = response.data;//JSON.stringify(res.data, null, 2)
+   } catch (err) {
+      console.log(err)
+      alert("Error while retrieving node data")
+   }
+
+
+   let edgeData;
+   try {
+      const response = await axios.get('http://localhost:5000/api/v0/findEdges', { params: { snapshotId: treeData.snapshotId } });
+      edgeData = response.data;//JSON.stringify(res.data, null, 2)
+   } catch (err) {
+      console.log(err)
+      alert("Error while retrieving edge data")
+   }
+
+   return [treeData, nodeData, edgeData];
+}
 
 export default CommdBranch;

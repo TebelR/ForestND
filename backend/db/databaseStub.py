@@ -4,19 +4,24 @@
 
 import json
 
+nodeTable = []
+edgeTable = []
+treeFamilyTable = []
+snapshotTable = []
+
 class DatabaseStub:
     def __init__(self):
         with open("db/nodeTable.json") as f:
-            nodeTable = json.load(f)
+            self.nodeTable = json.load(f)
 
         with open("db/edgeTable.json") as f:
-            edgeTable = json.load(f)
+            self.edgeTable = json.load(f)
 
         with open("db/treeFamilyTable.json") as f:
-            treeFamilyTable = json.load(f)
+            self.treeFamilyTable = json.load(f)
 
         with open("db/snapshotTable.json") as f:
-            snapshotTable = json.load(f)
+            self.snapshotTable = json.load(f)
 
 
 
@@ -25,27 +30,27 @@ class DatabaseStub:
 
     def getFamily(self,id):
         for family in self.treeFamilyTable:
-            if family["id"] == id:
+            if str(family["id"]) == str(id):
                 return family
             
     def getSnapshots(self,id):
         snapshots = []
         for snapshot in self.snapshotTable:
-            if snapshot["familyId"] == id:
+            if str(snapshot["familyId"]) == str(id):
                 snapshots.append(snapshot)
         return snapshots
 
     def getNodes(self,id):
         nodes = []
         for node in self.nodeTable:
-            if node["snapshotID"] == id:
+            if str(node["snapshotID"]) == str(id):
                 nodes.append(node)
         return nodes
 
     def getEdges(self,id):
         edges = []
         for edge in self.edgeTable:
-            if edge["snapshotID"] == id:
+            if str(edge["snapshotID"]) == str(id):
                 edges.append(edge)
         return edges
 
@@ -63,7 +68,7 @@ class DatabaseStub:
 
     def getSnapshot(self,id):
             for snapshot in self.snapshotTable:
-                if snapshot["snapshotId"] == id:
+                if str(snapshot["snapshotId"]) == str(id):
                     return snapshot
 
 
@@ -83,16 +88,16 @@ class DatabaseStub:
 
     def deleteFamily(self,id):
         for family in self.treeFamilyTable:
-            if family["id"] == id:
+            if str(family["id"]) == (id):
                 self.treeFamilyTable.remove(family)
                 for snapshot in self.snapshotTable:
-                    if snapshot["familyId"] == id:
+                    if str(snapshot["familyId"]) == (id):
                         self.snapshotTable.remove(snapshot)
                 return
             
     def deleteSnapshot(self,id):
         for snapshot in self.snapshotTable:
-            if snapshot["snapshotId"] == id:
+            if str(snapshot["snapshotId"]) == str(id):
                 self.snapshotTable.remove(snapshot)
                 return
             

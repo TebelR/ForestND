@@ -1,7 +1,7 @@
 [
     {
         "nodeID": 1,
-        "snapshotID": 1,
+        "snapshotID": 2,
         "serviceNum": "X0000",
         "position": "test",
         "description": "test",
@@ -9,7 +9,7 @@
     },
     {
         "nodeID": 2,
-        "snapshotID": 1,
+        "snapshotID": 2,
         "serviceNum": "X0001",
         "position": "test",
         "description": "test",
@@ -17,7 +17,7 @@
     },
     {
         "nodeID": 3,
-        "snapshotID": 1,
+        "snapshotID": 2,
         "serviceNum": "X0002",
         "position": "test",
         "description": "test",
@@ -25,7 +25,7 @@
     },
     {
         "nodeID": 4,
-        "snapshotID": 1,
+        "snapshotID": 2,
         "serviceNum": "X0003",
         "position": "test",
         "description": "test",
@@ -33,7 +33,7 @@
     },
     {
         "nodeID": 5,
-        "snapshotID": 1,
+        "snapshotID": 2,
         "serviceNum": "X0004",
         "position": "test",
         "description": "test",
@@ -41,7 +41,7 @@
     },
     {
         "nodeID": 6,
-        "snapshotID": 1,
+        "snapshotID": 2,
         "serviceNum": "X0005",
         "position": "test",
         "description": "test",
