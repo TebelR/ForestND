@@ -33,6 +33,23 @@ def getEdges():
     snapshotId = request.args.get('snapshotId')
     return jsonify(db.getEdges(snapshotId))
 
+@app.route('/api/v0/getLastSnap', methods=['GET'])
+def getLastSnap():
+    familyId = request.args.get('familyId')
+    snapshots = db.getSnapshots(familyId)
+    #now get the snapshot with the most recent creationDate
+    minId = 0
+    minDate = 0
+    for snapshot in snapshots:
+        if(snapshot["creationDate"] > minDate):
+            minId = snapshot["snapshotId"]
+            minDate = snapshot["creationDate"]
+    snapshotId = minId
+
+    return jsonify(db.getSnapshot(snapshotId))
+
+
+
 
 
 
@@ -57,6 +74,8 @@ def createSnapshot():
     
     db.postSnapshot(snapshotId, familyId)
     return jsonify({"success": "Snapshot created"}), 200
+
+
 
 
 
@@ -87,7 +106,7 @@ def deleteSnapshot():
 @app.route('/api/v0/shutdown', methods=['POST'])
 def shutdown():
     db.shutdown()
-    return jsonify({"success": "Server shutdown"}), 200
+    exit(0)
 
-if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
+if name == 'main':
+    app.run(debug=True, threaded=True, host='127.0.0.1', port=5000)#configure port

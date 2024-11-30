@@ -61,6 +61,10 @@ class DatabaseStub:
             snapshotIDs.append(snapshot["snapshotId"])
         return snapshotIDs
 
+    def getSnapshot(self,id):
+            for snapshot in self.snapshotTable:
+                if snapshot["snapshotId"] == id:
+                    return snapshot
 
 
 
