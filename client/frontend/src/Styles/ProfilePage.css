@@ -1,0 +1,63 @@
+@import 'colors.css';
+
+.container{
+    width: 80%;
+    height: 80vh;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    border: 1px black solid;
+}
+
+
+.header{
+    width: 100px;
+    height:100px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    border: 1px black solid;
+    border-radius: 100px;
+}
+
+.tabs{
+    display: flex;
+}
+
+.tabs ul{
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tabs li{
+    background-color: var(--secondary-color);
+    padding: 10px 20px;
+    margin-right: 5px;
+    border-radius: 10px;
+    border: 10px solic white;
+}
+
+.tabs a{
+    color: var(--white);
+    text-decoration: none;
+}
+
+.content{
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+.memberPhoto img{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+}
