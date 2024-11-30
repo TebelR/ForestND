@@ -17,8 +17,8 @@ function Navbar() {
           <Link to='/REOs'><FontAwesomeIcon icon={faBriefcase} /><br/>REOs</Link>
       </div>
       <div classname='navbarBottom'>
-          <Link to='/Settings'><FontAwesomeIcon icon={faCog} /><br/>Settings</Link>
-          <Link to='/Profile'><FontAwesomeIcon icon={faUser} /><br/>Profile</Link>
+          <Link to='/Settings'><FontAwesomeIcon icon={faCog} /></Link>
+          <Link to='/Profile'><FontAwesomeIcon icon={faUser} /></Link>
       </div>
     </div>
   )

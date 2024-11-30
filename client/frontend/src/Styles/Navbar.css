@@ -10,10 +10,9 @@
   transform: translateY(-50%); /* Center alignment */
   background-color: #333; /* Dark grey background */
   padding: 10px;
-  border-radius: 10px; /* Rounded corners for the "island" look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 80px; /* Fixed width for the island */
-  height: 95%;
+  height: 85%;
 }
 
 .navbar ul {
@@ -37,7 +36,6 @@
   padding: 10px;
   display: block;
   text-align: center; /* Center align the text */
-  border-radius: 5px; /* Rounded button edges */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
