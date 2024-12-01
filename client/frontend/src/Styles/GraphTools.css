@@ -1,0 +1,65 @@
+.graph-controls {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+    padding: 10px;
+    position: absolute;
+    /* Change to fixed for screen-relative positioning */
+    top: 55%;
+    right: 20px;
+    transform: translateY(-50%);
+    background-color: #333;
+    width: 10%;
+    height: 75%;
+    z-index: 10;
+    /* Ensure it's above other elements */
+}
+
+.graph-controls button {
+    text-decoration: none;
+    color: #000000;
+    /* White text */
+    font-size: 15px;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    margin: 10px;
+    width: 100%;
+    text-align: center;
+    background-color: #aaaaaa;
+    border-radius: 10px;
+    /* Center align the text */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.graph-controls button:hover {
+    background-color: #9003fc;
+    /* Darker background on hover */
+    color: #fff;
+    /* White text on hover */
+}
+
+.filterLabel {
+    text-decoration: none;
+    color: #000000;
+    /* White text */
+    font-size: 15px;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    max-width: 100%;
+    width: 90%;
+    text-align: center;
+    margin: 10px;
+    background-color: #aaaaaa;
+    border-radius: 10px;
+    /* Center align the text */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filterLabel:hover {
+    background-color: #9003fc;
+    color: #fff;
+
+}

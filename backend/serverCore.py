@@ -5,7 +5,7 @@ from datetime import datetime
 from db.databaseStub import DatabaseStub
 
 app = Flask(__name__)
-CORS(app)  # CORS for cross-origin requests, don't know how DNS works in our case
+CORS(app,supports_credentials=True)  # CORS for cross-origin requests, don't know how DNS works in our case
 
 db = DatabaseStub()
 
@@ -25,15 +25,15 @@ def getSnapshots():
 @app.route('/api/v0/findNodes', methods=['GET'])
 def getNodes():
     snapshotId = request.args.get('snapshotId')
-    return jsonify(db.getNodes(snapshotId))
+    nodes = db.getNodes(snapshotId)
+    #print(nodes)
+    return jsonify(nodes)
 
 
 @app.route('/api/v0/findEdges', methods=['GET'])
 def getEdges():
     snapshotId = request.args.get('snapshotId')
     edges = db.getEdges(snapshotId)
-    for edge in edges:
-        edge["edgeID"] = edge["edgeID"]*-1 #since we can't have nodes and edges having the same id in the graph
     return jsonify(db.getEdges(snapshotId))
 
 @app.route('/api/v0/getLastSnap', methods=['GET'])
@@ -51,10 +51,6 @@ def getLastSnap():
             targetId = str(snapshot["snapshotId"])
             maxDate = comparableDate
     snapshotId = targetId
-
-    # print("Returning snapshotId " + str(snapshotId))
-    # snapshot = db.getSnapshot(snapshotId)
-    # print(snapshot)
 
     output = jsonify(db.getSnapshot(snapshotId))
 
@@ -78,14 +74,44 @@ def createFamily():
 
 @app.route('/api/v0/createSnapshot', methods=['POST'])
 def createSnapshot():
-    snapshotId = request.args.get('snapshotId')
-    familyId = request.args.get('familyId')
-    snapshots = db.getSnapshotIDs()
-    if(snapshotId in snapshots):
-        return jsonify({"error": "Snapshot already exists"}), 420
+    try:
+        data = request.get_json()
+        if(data == None):
+            return jsonify({"error": "No data"}), 421
+        
+        #print(data)
+        if not all(k in data for k in ("familyId", "snapshotId", "creationDate")):
+            return jsonify({"error": "Missing required fields"}), 422
+        familyId = data["familyId"]
+        snapshotId = data["snapshotId"]
+        creationDate = data["creationDate"]
+        nodes = data["nodes"]
+        edges = data["edges"]
+
+        snapshots = db.getSnapshotIDsforFam(familyId)
+        if(snapshotId in snapshots):
+            return jsonify({"error": "Snapshot already exists"}), 420
+        
+        for node in nodes:
+            node["snapshotId"] = snapshotId
+        for edge in edges:
+            edge["snapshotId"] = snapshotId
+
+        snapshot = {"snapshotId": snapshotId, "familyId": familyId, "creationDate": creationDate}
+        db.postSnapshot(snapshot)
+
+        for node in nodes:
+            db.postNode(node)
+        for edge in edges:
+            db.postEdge(edge)
+            print("Posting edge: " + str(edge))
+        
+        return jsonify({"success": "Snapshot created"}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 500
     
-    db.postSnapshot(snapshotId, familyId)
-    return jsonify({"success": "Snapshot created"}), 200
 
 
 

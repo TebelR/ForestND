@@ -17,3 +17,12 @@
 .commdBranch:hover {
     background-color: rgba(37, 37, 37, 0.8);
 }
+
+.graphInfo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 100%;
+    z-index: 1;
+}
