@@ -23,56 +23,34 @@ function CommdBranch() {
    const [sourceNode, setSourceNode] = useState(null);
    const [targetNode, setTargetNode] = useState(null);
 
+   let familyName = React.useRef("");
+   let snapshot = React.useRef("");
+   let creationDate = React.useRef("");
 
    //fetch graph data on first render
    useEffect(() => {
-      async function fetchData() {
-         const graphData = await fetchTreeData();
-         let nodeData = graphData[1];
-         let edgeData = graphData[2];
-
-         nodeData.reverse();
-
-         const formattedNodes = nodeData.map(node => ({
-            data: {
-               id: String(node.nodeID),
-               name: String(node.serviceNum),
-               level: node.level,
-               acceleration: 0,
-               velocity: 0
-            }
-         }));
-
-         const formattedEdges = edgeData.map(edge => ({
-            data: {
-               id: String(edge.edgeID),
-               source: String(edge.startNodeID),
-               target: String(edge.endNodeID)
-            }
-         }));
-
-         setFormattedNodes(formattedNodes);
-         setFormattedEdges(formattedEdges);
-         //console.log(formattedNodes, formattedEdges);
-      }
-
-
-
-      //actual function call
       fetchData();
-      if (formattedNodes.length > 0 && formattedEdges.length > 0) {
-         if (document.querySelector('.commdBranch') === null) return;
-         buildTree(formattedNodes, formattedEdges);
-
-      }
    }, []);
 
 
+   function buildGraphInfo(familyName, snapshot, creationDate) {
+      let graphInfo = document.createElement('div');
+      graphInfo.className = 'graphInfo';
+      graphInfo.innerHTML = "<p class='info'></p>";
 
-
+      let info = graphInfo.querySelector('.info');
+      info.textContent = "Family: " + familyName + " | Snapshot: " + snapshot + " | Creation Date: " + creationDate;
+      document.querySelector('.commdBranch').innerHTML = "";
+      document.querySelector('.commdBranch').appendChild(graphInfo);
+   }
 
 
    function buildTree(formattedNodes, formattedEdges) {
+      // console.log(formattedNodes);
+      // console.log(formattedEdges);
+      console.log("BUILDING TREE at " + new Date().toLocaleTimeString());
+      console.log(formattedNodes);
+      console.log(formattedEdges);
       let cy = cytoscape({
          container: document.querySelector('.commdBranch'),
          elements: [
@@ -147,7 +125,7 @@ function CommdBranch() {
             directed: true,
             padding: 40,
             circle: false,
-            spacingFactor: 1.25,
+            spacingFactor: 0.8,
             avoidOverlap: true,
             nodeDimensionsIncludeLabels: true,
             roots: parseInt(getRootNode(formattedNodes)),
@@ -178,10 +156,16 @@ function CommdBranch() {
             const node = event.target;
             const position = node.position();
 
-            let outgoingEdges = node.outgoers();
-            if (outgoingEdges.length > 0)
-               updateEdge(node, outgoingEdges[0], cy);
-
+            let edges = cy.edges();
+            let incomingEdges = [];
+            edges.forEach((edge) => {
+               if (edge.data('target') === node.id()) {
+                  console.log("found incoming edge");
+                  incomingEdges.push(edge);
+               }
+            });
+            if (incomingEdges.length > 0)
+               updateEdge(node, incomingEdges[0], cy);
          });
 
          cy.on('dragfree', 'node', function (event) {
@@ -235,7 +219,7 @@ function CommdBranch() {
             cy.destroy();
          }
       }
-   }, [cyInstance]);
+   }, [cyInstance, formattedNodes, formattedEdges]);
 
 
 
@@ -246,6 +230,8 @@ function CommdBranch() {
    useEffect(() => {
       if (!cyInstance) return;
 
+
+      //Select two nodes to make an edge between them
       const handleMouseDown = (event) => {
          if (!createEdgeMode || !event.target.isNode()) return;
          if (sourceNode && event.target === sourceNode) {
@@ -292,33 +278,114 @@ function CommdBranch() {
    const resetGraph = () => {
       if (cyInstance)
          cyInstance.destroy();
-
       setCyInstance(null);
-
       try {
-         buildTree(formattedNodes, formattedEdges);
+         fetchData();//redraw everything with new data
       } catch (err) {
-         alert("Refreshing too fast");
+         alert("Refreshing too fast : " + err);
       }
    };
 
+
+   function recenter() {
+      cyInstance.center();
+      cyInstance.fit();
+   }
+
+
+   function saveGraph() {
+      const cy = cyInstance;
+      const nodes = cy.nodes();
+      const edges = cy.edges();
+      const nodeData = nodes.map(node => ({
+         nodeId: node.data('id'),
+         serviceNum: node.data('name'),
+         level: node.data('level'),
+         acceleration: node.data('acceleration'),
+         velocity: node.data('velocity')
+      }));
+      const edgeData = edges.map(edge => ({
+         edgeId: edge.id(),
+         startNodeId: edge.data('source'),
+         endNodeId: edge.data('target')
+      }));
+
+      snapshot.current = parseInt(snapshot.current) + 1;
+      creationDate.current = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      const data = {
+         familyId: familyName.current,
+         snapshotId: snapshot.current,
+         creationDate: creationDate.current,
+         nodes: nodeData,
+         edges: edgeData
+      };
+
+      console.log(edgeData);
+      axios.post('http://localhost:5000/api/v0/createSnapshot', data)
+         .catch(error => {
+            console.error(error);
+         });
+   }
+
+
+
+
+
+
+   async function fetchData() {
+      const graphData = await fetchTreeData();
+      let nodeData = graphData[1];
+      let edgeData = graphData[2];
+      familyName.current = String(graphData[0].familyId);
+      snapshot.current = String(graphData[0].snapshotId);
+      creationDate.current = String(graphData[0].creationDate);
+
+
+
+      nodeData.reverse();
+      console.log("NODE DATA: ", nodeData);
+      const formattedNodes = nodeData.map(node => ({
+         data: {
+            id: String(node.nodeId),
+            name: String(node.serviceNum),
+            level: node.level,
+            acceleration: 0,
+            velocity: 0
+         }
+      }));
+
+      const formattedEdges = edgeData.map(edge => ({
+         data: {
+            id: String(edge.edgeId),
+            source: String(edge.startNodeId),
+            target: String(edge.endNodeId)
+         }
+      }));
+
+      setFormattedNodes(formattedNodes);
+      setFormattedEdges(formattedEdges);
+
+      if (formattedNodes.length > 0 && formattedEdges.length > 0) {
+         if (document.querySelector('.commdBranch') === null) return;
+         buildGraphInfo(familyName.current, snapshot.current, creationDate.current);
+         buildTree(formattedNodes, formattedEdges);
+
+      }
+   }
+
+
+
+
+
    return (
+
       ReactDOM.createPortal(
-         <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} />,
+         <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} recenter={recenter} saveGraph={saveGraph} />,
          document.body // Or another location in the DOM, like a specific div
       )
+
    );
 };//End of CommdBranch function
-
-
-
-
-
-//Checks for the posibility of creating a new edge with the nearest neighbor node
-function lookForEdge(node, neighBors, cy) {
-
-}
-
 
 
 
@@ -327,16 +394,22 @@ function lookForEdge(node, neighBors, cy) {
 
 //Checks if node is pulled too far away and deletes the edge if needed - this logic is still weird
 function updateEdge(node, edge, cy) {
-   let connectedID = edge.data('target');
-   let connectedNode = cy.getElementById(connectedID);
-   let positionVectorTarget = connectedNode.position();
+   let connectedID = edge.data('source');
+   // let connectedNodeSource = cy.getElementById(edge.data('source'));
+   let otherNode;
+   if (connectedID === node.id())
+      otherNode = cy.getElementById(edge.data('target'));
+   else
+      otherNode = cy.getElementById(edge.data('source'));
+   let positionVectorTarget = otherNode.position();
    let postiionVectorOwn = node.position();
 
    let distance = Math.sqrt(
       (positionVectorTarget.x - postiionVectorOwn.x) * (positionVectorTarget.x - postiionVectorOwn.x) +
       (positionVectorTarget.y - postiionVectorOwn.y) * (positionVectorTarget.y - postiionVectorOwn.y)
-   );
 
+   );
+   console.log(distance);
    if (distance > SEPARATION_DIST_LOW && distance < SEPARATION_DIST_HIGH) {
       edge.data('line-color', 'rgba(255, 0, 0, 0.5)');
    } else if (distance > SEPARATION_DIST_HIGH) {
@@ -345,26 +418,8 @@ function updateEdge(node, edge, cy) {
       edge.data('line-color', '#ffffff');
    }
 
-}
 
 
-
-
-
-
-
-function getNearestNode(nodes, x, y) {
-   let nearestNode = null;
-   let minDistance = Infinity;
-   for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-      const distance = Math.sqrt((x - node.x) * (x - node.x) + (y - node.y) * (y - node.y));
-      if (distance < minDistance) {
-         minDistance = distance;
-         nearestNode = node;
-      }
-   }
-   return nearestNode;
 }
 
 

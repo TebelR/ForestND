@@ -43,14 +43,14 @@ class DatabaseStub:
     def getNodes(self,id):
         nodes = []
         for node in self.nodeTable:
-            if str(node["snapshotID"]) == str(id):
+            if str(node["snapshotId"]) == str(id):
                 nodes.append(node)
         return nodes
 
     def getEdges(self,id):
         edges = []
         for edge in self.edgeTable:
-            if str(edge["snapshotID"]) == str(id):
+            if str(edge["snapshotId"]) == str(id):
                 edges.append(edge)
         return edges
 
@@ -60,10 +60,11 @@ class DatabaseStub:
             familyIDs.append(family["id"])
         return familyIDs
 
-    def getSnapshotIDs(self):
+    def getSnapshotIDsforFam(self, id):
         snapshotIDs = []
         for snapshot in self.snapshotTable:
-            snapshotIDs.append(snapshot["snapshotId"])
+            if str(snapshot["familyId"]) == str(id):
+                snapshotIDs.append(snapshot["snapshotId"])
         return snapshotIDs
 
     def getSnapshot(self,id):
@@ -78,10 +79,17 @@ class DatabaseStub:
         self.treeFamilyTable.append(family)
         return family
 
-    def postSnapshot(self,snapshot):
+    def postSnapshot(self, snapshot):
         self.snapshotTable.append(snapshot)
         return snapshot
 
+    def postNode(self,node):
+        self.nodeTable.append(node)
+        return node
+
+    def postEdge(self,edge):
+        self.edgeTable.append(edge)
+        return edge
 
 
 
