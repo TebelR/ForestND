@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DataGrid from 'react-data-grid';
-import '../../Styles/ProfilePage.css'
+
 
 function Courses({ columns, rows }) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -27,8 +27,7 @@ function Courses({ columns, rows }) {
   }, []);
 
   return (
-    <div  className='Courses' ref={observedElementRef} style={{ resize: 'both', overflow: 'auto' }}>
-       
+    <div  className='Courses' ref={observedElementRef} >
       <DataGrid className='data-grid' columns={columns} rows={rows} />
     
     </div>
