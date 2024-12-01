@@ -12,11 +12,11 @@ function employment({
  <div className='child EmploymentInfo'>
     <h1>Employment Info</h1>
     <div className='InitialInfo'>
-        <InfoCard title='Unit:' info={unit} isEditable={false} />
-        <InfoCard title='Unit UIC:' info={Unit_UIC} isEditable={false} />
-        <InfoCard title='Trade:' info={Trade} isEditable={false} />
-        <InfoCard title='MOSID:' info={MOSID} isEditable={false} />
-        <InfoCard title='Position:' info={Position} isEditable={false} />
+        <InfoCard title='Unit:' info={unit} iseditable={false} />
+        <InfoCard title='Unit UIC:' info={Unit_UIC} iseditable={false} />
+        <InfoCard title='Trade:' info={Trade} iseditable={false} />
+        <InfoCard title='MOSID:' info={MOSID} iseditable={false} />
+        <InfoCard title='Position:' info={Position} iseditable={false} />
     </div>
 </div>
   )

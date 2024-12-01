@@ -1,14 +1,14 @@
 import React from 'react';
 import '../Styles/infoCard.css';
-function InfoCard({ title, info, isEditable, size = "small" }) {
+function InfoCard({ title, info, iseditable, size = "small" }) {
     return (
         <div className='controller'>
             <h3>{title}</h3>
             {size === "small" ? (
                 <div className='small-card'>
-                    {isEditable ? (
+                    {iseditable ? (
                         <div className='editable'>
-                            <input type="text" value={info} />
+                            <input type="text" defaultValue={info} value={info} />
                         </div>
                     ) : (
                         <div className='nonEditable'>
@@ -18,7 +18,7 @@ function InfoCard({ title, info, isEditable, size = "small" }) {
                 </div>
             ) : (
                 <div className='large-card'>
-                    {isEditable ? (
+                    {iseditable ? (
                         <div className='editable'>
                             <input type="text" value={info} />
                         </div>

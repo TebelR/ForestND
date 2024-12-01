@@ -1,0 +1,120 @@
+
+@import 'colors.css';
+
+.CheckinPage{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black ;
+    height: 80vh;
+    width: 80vw;
+    /*add drop shadow*/
+   display: flex;
+   background-color: var(--white);
+   border-radius: 10px;
+   justify-content: space-around;
+   flex-direction: row;
+   
+}
+
+.Calendar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.react-calendar{
+   
+    width: 90% !important;
+    height: 80% !important;
+    border: none;
+    border-radius: 10px;
+    color: black;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.react-calendar__viewContaine div{
+    height: 100vh !important;
+}
+.react-calendar__navigation__label{
+    color: var(--black);
+    font-size: larger;
+}
+
+.react-calendar__navigation__arrow, .react-calendar__navigation__next2-button{
+    
+}
+.react-calendar__navigation__arrow, .react-calendar__navigation__next-button{
+    color: black;
+}
+.checkin button{
+    padding: 5px 10px;
+    width:200px;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr{
+    color: var(--blue);
+    text-decoration: none;
+}
+
+.react-calendar__tile abbr{
+    color: var(--black);
+}
+
+.events{
+    
+}
+.eventList{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0.4;
+}
+
+.eventList ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    position: absolute;
+    top:-10%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    color: var(--white);
+
+    font-weight: 200;
+    border: 1px solid var(--white);
+    font-size: xx-large;
+}
+
+.checked-in {
+    background-color: #4caf50; /* Green background for checked-in days */
+    color: white; /* White text for contrast */
+    border-radius: 50%; /* Optional: make it circular */
+}
+
+/* Optional: Style for the calendar tiles */
+.react-calendar__tile {
+    border-radius: 4px; /* Rounded corners for all tiles */
+}
+.react-calendar__month-view__days {
+    height: x; /* Adjust header height if needed */
+}
+/* Increase the height of the calendar tiles */
+.react-calendar__tile {
+    height: 70px; /* Set your desired height */
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}

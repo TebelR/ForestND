@@ -3,7 +3,6 @@
 # It runs on a lot of assumptions and hope
 
 import json
-
 nodeTable = []
 edgeTable = []
 treeFamilyTable = []

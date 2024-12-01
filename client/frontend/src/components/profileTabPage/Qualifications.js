@@ -27,8 +27,7 @@ function Qualifications({ columns, rows }) {
   }, []);
 
   return (
-    <div  className='QualificationsInfo' ref={observedElementRef} style={{ resize: 'both', overflow: 'auto' }}>
-       
+    <div  className='QualificationsInfo' ref={observedElementRef} >
       <DataGrid className='data-grid' columns={columns} rows={rows} />
     
     </div>

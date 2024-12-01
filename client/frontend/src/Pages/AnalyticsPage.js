@@ -92,7 +92,7 @@ const qualsrows = [
 
 
 
-function ProfilePage() {
+function AnalyticsPage() {
   const [activeTab, setActiveTab] = useState('Profile');
 
 
@@ -200,4 +200,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default AnalyticsPage;

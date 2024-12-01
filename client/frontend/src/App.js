@@ -6,6 +6,10 @@ import LoginPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import Navbar from './components/Navbar';
 import ProfilePage from './Pages/ProfilePage';
+import CheckinPage from './Pages/CheckinPage';
+import REOsPage from './Pages/REOsPage';
+import AnalyticsPage from './Pages/AnalyticsPage';
+import SettingsPage from './Pages/SettingsPage';
 
 
 function App() {
@@ -25,7 +29,11 @@ function Main() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/Home" element={<HomePage />} />
+        <Route path="/Analytics" element={<AnalyticsPage />} />
         <Route path="/Profile" element={<ProfilePage />} />
+        <Route path="/checkin" element={<CheckinPage />} />
+        <Route path="/REOs" element={<REOsPage />} />\
+        <Route path="/Settings" element={<SettingsPage/>} />
       </Routes>
     </div>
   );

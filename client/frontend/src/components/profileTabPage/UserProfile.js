@@ -1,6 +1,6 @@
 import React from 'react'
 import InfoCard from '../InfoCard'
-import '../../Styles/UserProfile.css'
+import '../../Styles/ProfilePage.css'
 import activeIcon from '../../assets/activeStatus.png'
 import inactiveIcon from'../../assets/inActiveStatus.png'
 
@@ -25,23 +25,23 @@ function UserProfile({status,
         <div className='child memberInfo'>
             <h1 >Member Information</h1>
             <div className='InitialInfo'>
-                <InfoCard title='Rank:' info={rank} isEditable={false} />
-                <infoCard title='SN:' info={serviceNum} isEditable={false} />
-                <InfoCard title='First:' info={Fname} isEditable={false} />
-                <InfoCard title='Last:' info={Lname} isEditable={false} />
-                <InfoCard title='Middle:' info={Mname} isEditable={false} />
-                <InfoCard title='SN:' info={serviceNum} isEditable={false} />
-                <InfoCard title='DOB:' info={dob} isEditable={false} />
+                <InfoCard title='Rank:' info={rank} iseditable={false} />
+                <infoCard title='SN:' info={serviceNum} iseditable={false} />
+                <InfoCard title='First:' info={Fname} iseditable={false} />
+                <InfoCard title='Last:' info={Lname} iseditable={false} />
+                <InfoCard title='Middle:' info={Mname} iseditable={false} />
+                <InfoCard title='SN:' info={serviceNum} iseditable={false} />
+                <InfoCard title='DOB:' info={dob} iseditable={false} />
                 
-                <InfoCard title='Cell:' info={phone} isEditable={false} />
+                <InfoCard title='Cell:' info={phone} iseditable={false} />
             </div>
 
             <div className=' ContactInfo'>
-                <InfoCard title='Email' info={email} isEditable={true}  size='large'/>
-                <InfoCard title='Address' info={address} isEditable={false} size='large' />
-                <InfoCard title = "Postal Code" info={postalCode} isEditable={false}/>
-                <InfoCard title="City" info={city} isEditable={false}/>
-                <InfoCard title="Province" info={Province} isEditable={true}/>
+                <InfoCard title='Email' info={email} iseditable={true}  size='large'/>
+                <InfoCard title='Address' info={address} iseditable={false} size='large' />
+                <InfoCard title = "Postal Code" info={postalCode} iseditable={false}/>
+                <InfoCard title="City" info={city} iseditable={false}/>
+                <InfoCard title="Province" info={Province} iseditable={true}/>
             </div>
         </div>
 
