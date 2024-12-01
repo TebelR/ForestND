@@ -134,23 +134,16 @@ function CommdBranch() {
             animationEasing: 'ease-out-circ',
             transform: function (node, position) {
                let matchId = node.data('id');
-               // position.x = formattedNodes[node.data('id')].data.position.x;
                let matchedNode = formattedNodes.find(node => node.data.id === matchId);
-               position.x = matchedNode.data.position.x;
 
-               //position.y = formattedNodes[node.data('id')].data.position.y;
+               position.x = matchedNode.data.position.x;
                position.y = matchedNode.data.position.y;
-               console.log("POSITION: ", position);
                return position;
             }
          }
       });
       setCyInstance(cy);
 
-      // formattedNodes.forEach(node => {
-      //    const cyNode = cy.getElementById(node.id);
-      //    cyNode.position(node.position);  // Set the position
-      // });
    }
 
 
@@ -359,10 +352,11 @@ function CommdBranch() {
       const graphData = await fetchTreeData();
       let nodeData = graphData[1];
       let edgeData = graphData[2];
-      familyName.current = String(graphData[0].familyId);
+      console.log("fetching data, old fam name is: ", familyName.current, snapshot.current, creationDate.current);
+      //familyName.current = String(graphData[0].familyId);
       snapshot.current = String(graphData[0].snapshotId);
       creationDate.current = String(graphData[0].creationDate);
-
+      console.log("new fam name is: ", familyName.current, snapshot.current, creationDate.current);
 
 
       nodeData.reverse();
@@ -384,8 +378,7 @@ function CommdBranch() {
                id: String(node.nodeId),
                name: String(node.serviceNum),
                level: node.level,
-               x: Math.random() * document.querySelector('.commdBranch').offsetWidth,
-               y: Math.random() * document.querySelector('.commdBranch').offsetHeight
+               position: { x: Math.random() * document.querySelector('.commdBranch').offsetWidth, y: Math.random() * document.querySelector('.commdBranch').offsetHeight }
             }
          }));
       }
@@ -410,6 +403,50 @@ function CommdBranch() {
       }
    }
 
+
+
+
+
+
+
+
+
+
+   //This talks to the backend through API calls
+   async function fetchTreeData() {
+      let treeData;
+      try {
+         if (familyName.current === "")
+            familyName.current = "1";
+         const response = await axios.get('http://localhost:5000/api/v0/getLastSnap', { params: { familyId: familyName.current } });
+         treeData = response.data;//JSON.stringify(response.data, null, 2)
+
+      } catch (err) {
+         console.log(err)
+         alert("Error while retrieving tree data")
+      }
+
+      let nodeData;
+      try {
+         const response = await axios.get('http://localhost:5000/api/v0/findNodes', { params: { snapshotId: treeData.snapshotId } });
+         nodeData = response.data;//JSON.stringify(res.data, null, 2)
+      } catch (err) {
+         console.log(err)
+         alert("Error while retrieving node data")
+      }
+
+
+      let edgeData;
+      try {
+         const response = await axios.get('http://localhost:5000/api/v0/findEdges', { params: { snapshotId: treeData.snapshotId } });
+         edgeData = response.data;//JSON.stringify(res.data, null, 2)
+      } catch (err) {
+         console.log(err)
+         alert("Error while retrieving edge data")
+      }
+
+      return [treeData, nodeData, edgeData];
+   }
 
 
 
@@ -487,39 +524,6 @@ function getRootNode(nodes) {
 
 
 
-//This talks to the backend through API calls
-async function fetchTreeData() {
-   let treeData;
-   try {
-      const response = await axios.get('http://localhost:5000/api/v0/getLastSnap', { params: { familyId: 1 } });
-      treeData = response.data;//JSON.stringify(response.data, null, 2)
-
-   } catch (err) {
-      console.log(err)
-      alert("Error while retrieving tree data")
-   }
-
-   let nodeData;
-   try {
-      const response = await axios.get('http://localhost:5000/api/v0/findNodes', { params: { snapshotId: treeData.snapshotId } });
-      nodeData = response.data;//JSON.stringify(res.data, null, 2)
-   } catch (err) {
-      console.log(err)
-      alert("Error while retrieving node data")
-   }
-
-
-   let edgeData;
-   try {
-      const response = await axios.get('http://localhost:5000/api/v0/findEdges', { params: { snapshotId: treeData.snapshotId } });
-      edgeData = response.data;//JSON.stringify(res.data, null, 2)
-   } catch (err) {
-      console.log(err)
-      alert("Error while retrieving edge data")
-   }
-
-   return [treeData, nodeData, edgeData];
-}
 
 
 
