@@ -1,0 +1,214 @@
+@import 'colors.css';
+
+.container{
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+
+.tabs ul{
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.tabs a{
+    color: var(--white);
+    font-size: 12px;
+    display: flex;
+    text-decoration: none;
+    border: 1px solid var(--white);
+    padding: 5px 15px;
+    margin-right: 1px;
+    border-radius: 5px;
+}
+
+.tabs a:hover{
+    color: var(--white);
+    background-color: var(--blue);
+}   
+
+.tabs li:active{
+    color: var(--white);
+    background-color: var(--blue);
+}
+.tabs li.active a {
+    color: var(--white);
+    background-color: var(--blue);
+}
+
+/*dealing with the three sections found in profile page */
+.userProfile{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    
+    border-radius: 10px;
+}
+.child{
+    
+    width: 90%;
+    height: 100%;
+    border-radius: 10px;
+    
+}
+
+
+
+.content2{
+    flex: 1; 
+    width:80vw;
+    height:70vh;
+    display: flex;
+    border: 1px solid black;
+    border-radius: 10px;
+
+    background-color: var(--tertiary-color);
+    
+}
+
+.memberInfo{
+    padding-right: 50px;
+    padding-left:10px ;
+}
+
+/*dealing with member photo found in userProfile*/
+.photoContainer{
+    display: flex; 
+    justify-content: center; 
+    
+}
+
+
+.memberPhoto{
+    margin-top: 40px;
+    position: relative; 
+    height: 300px; 
+    width: 250px;
+    display: flex; align-items: center;
+    justify-content: center; 
+    align-items: center; 
+    
+    
+}
+
+.memberPhoto img{
+    height: 100%; 
+    border-radius: 200px;
+}
+
+.status{
+    position: absolute;
+    bottom: 10px; 
+    right: 10px;
+    width: 30px; 
+    height: 30px; 
+
+}
+
+
+.status img{
+    width: 150%; 
+    height: 150%; 
+}
+
+
+.ContactInfo{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto; /* Create 2 equal columns */
+    gap: 20px; /* Optional: space between items */
+}
+
+/*dealing with member information found in userProfile*/
+.InitialInfo {
+    display: grid; /* Enable grid layout */
+    grid-template-columns: auto auto; /* Create 2 equal columns */
+    gap: 20px; /* Optional: space between items */
+}
+h1{
+    justify-self: center;
+    align-self: center;
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid var(--secondary-color);
+    font-weight: 200;
+
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    position: absolute;
+    top:-10%;
+    width: 100%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+
+/*Employment information found in userProfile*/
+.EmploymentInfo{
+    height: none;
+    width: 40%;
+    padding-right:10px ;
+}
+
+.title2{
+    position: absolute;
+    top:0%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white);
+    font-weight: bolder;
+    font-size: xx-large;
+}
+
+.data-grid {
+    width: 100%; 
+    height: 100%;
+    border: 1px solid #ccc; 
+}
+.data-grid::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  background-color: #f1f1f1;
+}
+
+.data-grid::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+
+.rdg-row {
+    background-color: var(--white); /* Light gray background */
+    color: black;
+  }
+  
+.rdg-cell {
+    border: 1px solid var(--tertiary-color); /* Light gray border */
+    padding: 8px;
+    text-align: left;
+  }
+
+
+.Courses , .QualificationsInfo, .ARR{
+    width: 100%; 
+    height: 100%;
+    resize: none;
+  }
+
+
+.rdg{
+    background-color: var(--white);
+}
