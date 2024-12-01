@@ -2,6 +2,17 @@
 
 # Running the project
 
+First, to start the server, one needs to launch the ForestND_Server.exe
+
+Next, ensure you have a static server installed or follow this script:
+npm install -g serve
+
+Next, navigate to the same directory as the ForestND_Server.exe and run:
+serve -s
+
+From this point you can go to localhost:3000 in your browser.
+
+A copy of build files exists in /hackBuilds upon opening the project
 
 # Project Overview
 
@@ -16,7 +27,7 @@ The personal information module was also derived from MM, but with a big additio
 
 This project has two components - front and back.
 The front end is developed in React.
-The most technically complex part of the client is the graph that can be seen on the home page.
+The most technically complex part of the client is the graph that can be seen on the home page. Almost all of its code is in the CommdBranch.js component.
 We used the Cytoscape library to make it work and have added a lot of additional functionality between the graph and neighboring components.
 
 The back end is developed using flask-cors in Python. The back end at the moment is a simple Python server that provides clients with API. The server is multithreaded, and communicates with a stub database that stores its data in JSON files.
@@ -33,7 +44,7 @@ The app has a lot of potential for processing data and delivering statistics to 
 # How to get started (to code)
 
 Download VSCode.
-Download Pthon from here: https://www.python.org
+Download Python from here: https://www.python.org
 Open a new terminal in VSCode and run: pip install flask flask-cors
 
 To run python files, type: python nameofFile.py
@@ -52,3 +63,6 @@ pyinstaller --onefile --add-data "db/nodeTable.json:db" --add-data "db/edgeTable
 ^^^This sends the python executable into /dist
 
 
+npm run build
+
+^^^This sends the react client to /builds
