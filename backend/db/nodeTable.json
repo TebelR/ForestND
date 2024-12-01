@@ -6,7 +6,12 @@
         "position": "test",
         "description": "test",
         "upEdgeId": 1,
-        "level": 0
+        "level": 0,
+        "driverQualWheel": true,
+        "driverQualMS": true,
+        "course": true,
+        "forceTest": true,
+        "firstAid": true
     },
     {
         "nodeId": 2,
@@ -15,7 +20,12 @@
         "position": "test",
         "description": "test",
         "upEdgeID": 2,
-        "level": 0.1
+        "level": 0.1,
+        "driverQualWheel": false,
+        "driverQualMS": false,
+        "course": true,
+        "forceTest": true,
+        "firstAid": false
     },
     {
         "nodeId": 3,
@@ -24,7 +34,12 @@
         "position": "test",
         "description": "test",
         "upEdgeID": 3,
-        "level": 0.2
+        "level": 0.2,
+        "driverQualWheel": true,
+        "driverQualMS": false,
+        "course": true,
+        "forceTest": true,
+        "firstAid": true
     },
     {
         "nodeId": 4,
@@ -33,7 +48,12 @@
         "position": "test",
         "description": "test",
         "upEdgeID": 4,
-        "level": 0.3
+        "level": 0.3,
+        "driverQualWheel": false,
+        "driverQualMS": false,
+        "course": false,
+        "forceTest": false,
+        "firstAid": false
     },
     {
         "nodeId": 5,
@@ -42,7 +62,12 @@
         "position": "test",
         "description": "test",
         "upEdgeID": 5,
-        "level": 0.3
+        "level": 0.3,
+        "driverQualWheel": true,
+        "driverQualMS": true,
+        "course": true,
+        "forceTest": false,
+        "firstAid": true
     },
     {
         "nodeId": 6,
@@ -51,7 +76,12 @@
         "position": "test",
         "description": "test",
         "upEdgeID": 6,
-        "level": 0.3
+        "level": 0.3,
+        "driverQualWheel": true,
+        "driverQualMS": true,
+        "course": true,
+        "forceTest": true,
+        "firstAid": true
     },
     {
         "nodeId": 7,
@@ -60,6 +90,11 @@
         "position": "test",
         "description": "test",
         "upEdgeID": 6,
-        "level": 0.2
+        "level": 0.2,
+        "driverQualWheel": true,
+        "driverQualMS": false,
+        "course": true,
+        "forceTest": false,
+        "firstAid": false
     }
 ]

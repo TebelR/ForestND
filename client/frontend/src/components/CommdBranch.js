@@ -188,7 +188,7 @@ function CommdBranch() {
 
          cy.on('click', 'node', (event) => {
             const node = event.target;
-            console.log(`Clicked node: ${node.data('id')}`);
+            //console.log(`Clicked node: ${node.data('id')}`);
          });
 
          cy.on('mouseover', 'node', (event) => {
@@ -302,14 +302,19 @@ function CommdBranch() {
       const cy = cyInstance;
       const nodes = cy.nodes();
       const nodePositions = cy.nodes().map(node => ({
-         id: node.id(),             // The node's ID
-         position: node.position()   // The node's position (x, y)
+         id: node.id(),
+         position: node.position()
       }));
       const edges = cy.edges();
       const nodeData = nodes.map(node => ({
          nodeId: node.data('id'),
          serviceNum: node.data('name'),
-         level: node.data('level')
+         level: node.data('level'),
+         driverQualWheel: node.data('driverQualWheel'),
+         driverQualMS: node.data('driverQualMS'),
+         course: node.data('course'),
+         forceTest: node.data('forceTest'),
+         firstAid: node.data('firstAid')
       }));
       for (let i = 0; i < nodeData.length; i++) {
          for (let j = 0; j < nodePositions.length; j++) {
@@ -327,7 +332,7 @@ function CommdBranch() {
 
       snapshot.current = parseInt(snapshot.current) + 1;
       creationDate.current = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      console.log("NEW CREATION DATE: ", creationDate.current);
+      // console.log("NEW CREATION DATE: ", creationDate.current);
       const data = {
          familyId: familyName.current,
          snapshotId: snapshot.current,
@@ -368,7 +373,12 @@ function CommdBranch() {
                id: String(node.nodeId),
                name: String(node.serviceNum),
                level: node.level,
-               position: { x: node.x, y: node.y }
+               position: { x: node.x, y: node.y },
+               driverQualWheel: node.driverQualWheel,
+               driverQualMS: node.driverQualMS,
+               course: node.course,
+               forceTest: node.forceTest,
+               firstAid: node.firstAid
             }
          }));
       } else {
@@ -378,7 +388,12 @@ function CommdBranch() {
                id: String(node.nodeId),
                name: String(node.serviceNum),
                level: node.level,
-               position: { x: Math.random() * document.querySelector('.commdBranch').offsetWidth, y: Math.random() * document.querySelector('.commdBranch').offsetHeight }
+               position: { x: Math.random() * document.querySelector('.commdBranch').offsetWidth, y: Math.random() * document.querySelector('.commdBranch').offsetHeight },
+               driverQualWheel: node.driverQualWheel,
+               driverQualMS: node.driverQualMS,
+               course: node.course,
+               forceTest: node.forceTest,
+               firstAid: node.firstAid
             }
          }));
       }
@@ -451,10 +466,37 @@ function CommdBranch() {
 
 
 
+
+
+
+   function applyFilter(filter) {
+      let nodes = cyInstance.nodes();
+      for (let i = 0; i < nodes.length; i++) {
+         if (filter === "None") {
+            nodes[i].style('background-color', '#aaaaaa');
+            nodes[i].style('border-color', '#aaaaaa');
+            nodes[i].style('color', '#000000');
+         } else {
+            if (nodes[i].data(filter)) {
+               nodes[i].style('background-color', '#6fedd6');
+               nodes[i].style('border-color', '#6fedd6');
+               nodes[i].style('color', '#000000');
+            } else {
+               nodes[i].style('background-color', '#777777');
+               nodes[i].style('border-color', '#777777');
+               nodes[i].style('color', '#000000');
+            }
+         }
+
+      }
+   }
+
+
+
    return (
 
       ReactDOM.createPortal(
-         <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} recenter={recenter} saveGraph={saveGraph} />,
+         <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} recenter={recenter} saveGraph={saveGraph} applyFilter={applyFilter} />,
          document.body // Or another location in the DOM, like a specific div
       )
 
