@@ -7,8 +7,8 @@ import ARR from '../components/profileTabPage/ARR';
 import userPhoto from '../assets/profile.png';
 import SearchBar from '../components/SearchBar';
 import Courses from '../components/profileTabPage/Courses';
-import FeedbackNotes from '../components/analyticsTabPage/FeedbackNote';
-import '../Styles/AnalyticsPage.css';
+import FeedbackNotes from '../components/ReoTabPage/FeedbackNote';
+//import {LineChart} from '@mui/material';
 
 
 const data = {
@@ -94,53 +94,16 @@ const qualsrows = [
 
 
 function AnalyticsPage() {
-  const [activeTab, setActiveTab] = useState('Profile');
 
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'Feedback Notes':
-        return (
-          <div className='content2'>
-            <FeedbackNotes />
-          </div>
-        );
-      case "MAP":
-        return <div className='content2'>
-         Map
-        </div>;
-      case 'Job Description':
-        return <div className='content2'> 
-        Job Description
-        </div>;
-      case 'RER/PDR':
-        return <div className='content2'>
-        RER/PDR
-        </div>;
-      default:
-        return <div>Select a tab</div>;
-    }
-  };
 
   return (
     <div className='container'>
       <SearchBar />
-      <div className='header'>
-        <h1 className='title2'>{data.position}</h1>
-      </div>  
-      <div className='tabs'>
-        <ul>
-          {['Feedback Notes', "MAP",'Job Description', 'RER/PDR'].map(atab => (
-            <li key={atab} className={activeTab === atab ? 'active' : ''} onClick={() => setActiveTab(atab)}>
-              <a href="#">{atab}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
+ 
 
       <div className='content'>
-        <div className='Profile'>
-          {renderContent()}
+        <div className='Analytics'>
+   
         </div>
       </div>
     </div>
