@@ -47,11 +47,12 @@ def getLastSnap():
     maxDate = datetime.strptime("0001-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
     for snapshot in snapshots:
         comparableDate = datetime.strptime(snapshot["creationDate"], '%Y-%m-%d %H:%M:%S')
+        print("Comparing " + str(comparableDate) + " to " + str(maxDate))
         if(comparableDate > maxDate):
             targetId = str(snapshot["snapshotId"])
             maxDate = comparableDate
     snapshotId = targetId
-
+    print("Returning snapshotId " + snapshotId) 
     output = jsonify(db.getSnapshot(snapshotId))
 
     return output
@@ -79,7 +80,7 @@ def createSnapshot():
         if(data == None):
             return jsonify({"error": "No data"}), 421
         
-        #print(data)
+        print(data)
         if not all(k in data for k in ("familyId", "snapshotId", "creationDate")):
             return jsonify({"error": "Missing required fields"}), 422
         familyId = data["familyId"]
@@ -98,13 +99,14 @@ def createSnapshot():
             edge["snapshotId"] = snapshotId
 
         snapshot = {"snapshotId": snapshotId, "familyId": familyId, "creationDate": creationDate}
+        
         db.postSnapshot(snapshot)
 
         for node in nodes:
             db.postNode(node)
         for edge in edges:
             db.postEdge(edge)
-            print("Posting edge: " + str(edge))
+            # print("Posting edge: " + str(edge))
         
         return jsonify({"success": "Snapshot created"}), 200
 

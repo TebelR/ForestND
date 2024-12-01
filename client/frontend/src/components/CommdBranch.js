@@ -133,12 +133,24 @@ function CommdBranch() {
             animationDuration: 200,
             animationEasing: 'ease-out-circ',
             transform: function (node, position) {
-               position.y = node.data('level') * 1000;
+               let matchId = node.data('id');
+               // position.x = formattedNodes[node.data('id')].data.position.x;
+               let matchedNode = formattedNodes.find(node => node.data.id === matchId);
+               position.x = matchedNode.data.position.x;
+
+               //position.y = formattedNodes[node.data('id')].data.position.y;
+               position.y = matchedNode.data.position.y;
+               console.log("POSITION: ", position);
                return position;
             }
          }
       });
       setCyInstance(cy);
+
+      // formattedNodes.forEach(node => {
+      //    const cyNode = cy.getElementById(node.id);
+      //    cyNode.position(node.position);  // Set the position
+      // });
    }
 
 
@@ -296,14 +308,24 @@ function CommdBranch() {
    function saveGraph() {
       const cy = cyInstance;
       const nodes = cy.nodes();
+      const nodePositions = cy.nodes().map(node => ({
+         id: node.id(),             // The node's ID
+         position: node.position()   // The node's position (x, y)
+      }));
       const edges = cy.edges();
       const nodeData = nodes.map(node => ({
          nodeId: node.data('id'),
          serviceNum: node.data('name'),
-         level: node.data('level'),
-         acceleration: node.data('acceleration'),
-         velocity: node.data('velocity')
+         level: node.data('level')
       }));
+      for (let i = 0; i < nodeData.length; i++) {
+         for (let j = 0; j < nodePositions.length; j++) {
+            if (nodeData[i].nodeId === nodePositions[j].id) {
+               nodeData[i].x = nodePositions[j].position.x;
+               nodeData[i].y = nodePositions[j].position.y;
+            }
+         }
+      }
       const edgeData = edges.map(edge => ({
          edgeId: edge.id(),
          startNodeId: edge.data('source'),
@@ -312,6 +334,7 @@ function CommdBranch() {
 
       snapshot.current = parseInt(snapshot.current) + 1;
       creationDate.current = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      console.log("NEW CREATION DATE: ", creationDate.current);
       const data = {
          familyId: familyName.current,
          snapshotId: snapshot.current,
@@ -344,15 +367,29 @@ function CommdBranch() {
 
       nodeData.reverse();
       console.log("NODE DATA: ", nodeData);
-      const formattedNodes = nodeData.map(node => ({
-         data: {
-            id: String(node.nodeId),
-            name: String(node.serviceNum),
-            level: node.level,
-            acceleration: 0,
-            velocity: 0
-         }
-      }));
+      let formattedNodes = [];
+      if (nodeData[0].x && nodeData[0].y) {
+         formattedNodes = nodeData.map(node => ({
+            data: {
+               id: String(node.nodeId),
+               name: String(node.serviceNum),
+               level: node.level,
+               position: { x: node.x, y: node.y }
+            }
+         }));
+      } else {
+         //give random positions if positional data is bad
+         formattedNodes = nodeData.map(node => ({
+            data: {
+               id: String(node.nodeId),
+               name: String(node.serviceNum),
+               level: node.level,
+               x: Math.random() * document.querySelector('.commdBranch').offsetWidth,
+               y: Math.random() * document.querySelector('.commdBranch').offsetHeight
+            }
+         }));
+      }
+
 
       const formattedEdges = edgeData.map(edge => ({
          data: {
