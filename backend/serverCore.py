@@ -36,27 +36,35 @@ def getEdges():
     edges = db.getEdges(snapshotId)
     return jsonify(db.getEdges(snapshotId))
 
-@app.route('/api/v0/getLastSnap', methods=['GET'])
+@app.route('/api/v0/getLastSnap', methods=['GET'])#returns the most recent snapshot in a family
 def getLastSnap():
     
     familyId = request.args.get('familyId')
     # print("Retrieving last snapshot for familyId " + familyId)
     snapshots = db.getSnapshots(familyId)
-    
+
     #now get the snapshot with the most recent creationDate
     targetId = "0"
     maxDate = datetime.strptime("0001-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
     for snapshot in snapshots:
         comparableDate = datetime.strptime(snapshot["creationDate"], '%Y-%m-%d %H:%M:%S')
-       # print("Comparing " + str(comparableDate) + " to " + str(maxDate))
         if(comparableDate > maxDate):
+            #print("Updating maxDate to " + str(comparableDate) + " and targetId to " + str(snapshot["snapshotId"]))
             targetId = str(snapshot["snapshotId"])
             maxDate = comparableDate
     snapshotId = targetId
-   #print("Returning snapshotId " + snapshotId) 
+    # print("Returning snapshotId " + snapshotId) 
+
     output = jsonify(db.getSnapshot(snapshotId))
 
     return output
+
+
+@app.route('/api/v0/getFamilyNames', methods=['GET'])
+def getFamilyIDs():
+    return jsonify(db.getFamilyIDs())
+
+
 
 
 
@@ -65,12 +73,26 @@ def getLastSnap():
 
 @app.route('/api/v0/createFamily', methods=['POST'])
 def createFamily():
-    familyId = request.args.get('familyId')
-    families = request.args.get('families')
+    data = request.get_json()
+    familyId = data["familyId"]
+    families = db.getFamilyIDs()
     if(familyId in families):
+        # print("TRYING TO MAKE EXISTING FAMILY: " + familyId)
         return jsonify({"error": "Family already exists"}), 420
     
-    db.postFamily(familyId)
+    family = {"id": familyId, "name": "test"}
+    #print(data)
+    snapShot = {"snapshotId": data["snapshotId"], "familyId": familyId, "creationDate": data["creationDate"]}
+    nodes = data["nodes"]
+    edges = data["edges"]
+
+    for node in nodes:
+        db.postNode(node)
+    for edge in edges:
+        db.postEdge(edge)
+
+    db.postFamily(family)
+    db.postSnapshot(snapShot)
     return jsonify({"success": "Family created"}), 200
 
 

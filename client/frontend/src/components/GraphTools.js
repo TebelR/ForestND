@@ -1,7 +1,7 @@
 import React from 'react';
 import "../Styles/GraphTools.css";
 
-function GraphTools({ setCreateEdgeMode, resetGraph, recenter, saveGraph, applyFilter }) {
+function GraphTools({ setCreateEdgeMode, resetGraph, recenter, saveGraph, applyFilter, saveGraphFamily }) {
     const createEdgeClick = () => {
         setCreateEdgeMode((prev) => !prev);
     };
@@ -16,6 +16,10 @@ function GraphTools({ setCreateEdgeMode, resetGraph, recenter, saveGraph, applyF
 
     const saveGraphClick = () => {
         saveGraph();
+    }
+
+    const saveGraphFamilyClick = () => {
+        saveGraphFamily();
     }
 
 
@@ -59,11 +63,8 @@ function GraphTools({ setCreateEdgeMode, resetGraph, recenter, saveGraph, applyF
             <button onClick={saveGraphClick}>
                 Save Graph
             </button>
-            <button>
+            <button onClick={saveGraphFamilyClick}>
                 Save Graph As
-            </button>
-            <button>
-                Load Graph
             </button>
 
             <label className="filterLabel">Filter 1</label>

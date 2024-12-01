@@ -5,6 +5,7 @@ import "../Styles/commdBranch.css";
 import axios from 'axios';
 import { useState } from 'react';
 import GraphTools from '../components/GraphTools';
+import SavedSection from '../components/savedSection';
 import ReactDOM from 'react-dom';
 
 const SEPARATION_DIST_LOW = 100;
@@ -17,6 +18,8 @@ function CommdBranch() {
    //this is done because of async nature of fetching data
    const [formattedNodes, setFormattedNodes] = useState([]);
    const [formattedEdges, setFormattedEdges] = useState([]);
+
+   //const [refreshSavedSection, setRefreshSavedSection] = useState(() => () => { });
 
    const [cyInstance, setCyInstance] = useState(null);
    const [createEdgeMode, setCreateEdgeMode] = useState(false);
@@ -48,9 +51,9 @@ function CommdBranch() {
    function buildTree(formattedNodes, formattedEdges) {
       // console.log(formattedNodes);
       // console.log(formattedEdges);
-      console.log("BUILDING TREE at " + new Date().toLocaleTimeString());
-      console.log(formattedNodes);
-      console.log(formattedEdges);
+      //console.log("BUILDING TREE at " + new Date().toLocaleTimeString());
+      //console.log(formattedNodes);
+      //console.log(formattedEdges);
       let cy = cytoscape({
          container: document.querySelector('.commdBranch'),
          elements: [
@@ -165,7 +168,7 @@ function CommdBranch() {
             let incomingEdges = [];
             edges.forEach((edge) => {
                if (edge.data('target') === node.id()) {
-                  console.log("found incoming edge");
+                  //console.log("found incoming edge");
                   incomingEdges.push(edge);
                }
             });
@@ -308,6 +311,8 @@ function CommdBranch() {
       const edges = cy.edges();
       const nodeData = nodes.map(node => ({
          nodeId: node.data('id'),
+         familyId: familyName.current,
+         snapshotId: snapshot.current,
          serviceNum: node.data('name'),
          level: node.data('level'),
          driverQualWheel: node.data('driverQualWheel'),
@@ -326,6 +331,8 @@ function CommdBranch() {
       }
       const edgeData = edges.map(edge => ({
          edgeId: edge.id(),
+         familyId: familyName.current,
+         snapshotId: snapshot.current,
          startNodeId: edge.data('source'),
          endNodeId: edge.data('target')
       }));
@@ -341,7 +348,7 @@ function CommdBranch() {
          edges: edgeData
       };
 
-      console.log(edgeData);
+      //console.log(edgeData);
       axios.post('http://localhost:5000/api/v0/createSnapshot', data)
          .catch(error => {
             console.error(error);
@@ -357,20 +364,23 @@ function CommdBranch() {
       const graphData = await fetchTreeData();
       let nodeData = graphData[1];
       let edgeData = graphData[2];
-      console.log("fetching data, old fam name is: ", familyName.current, snapshot.current, creationDate.current);
+      console.log("GRAPH DATA: ", graphData);
+      if (nodeData.length === 0 || edgeData.length === 0) return;
+      //console.log("fetching data, old fam name is: ", familyName.current, snapshot.current, creationDate.current);
       //familyName.current = String(graphData[0].familyId);
       snapshot.current = String(graphData[0].snapshotId);
       creationDate.current = String(graphData[0].creationDate);
-      console.log("new fam name is: ", familyName.current, snapshot.current, creationDate.current);
+      //console.log("new fam name is: ", familyName.current, snapshot.current, creationDate.current);
 
 
       nodeData.reverse();
-      console.log("NODE DATA: ", nodeData);
+      //console.log("NODE DATA: ", nodeData);
       let formattedNodes = [];
       if (nodeData[0].x && nodeData[0].y) {
          formattedNodes = nodeData.map(node => ({
             data: {
                id: String(node.nodeId),
+               familyId: String(node.familyId),
                name: String(node.serviceNum),
                level: node.level,
                position: { x: node.x, y: node.y },
@@ -386,6 +396,7 @@ function CommdBranch() {
          formattedNodes = nodeData.map(node => ({
             data: {
                id: String(node.nodeId),
+               familyId: String(node.familyId),
                name: String(node.serviceNum),
                level: node.level,
                position: { x: Math.random() * document.querySelector('.commdBranch').offsetWidth, y: Math.random() * document.querySelector('.commdBranch').offsetHeight },
@@ -402,6 +413,7 @@ function CommdBranch() {
       const formattedEdges = edgeData.map(edge => ({
          data: {
             id: String(edge.edgeId),
+            familyId: String(edge.familyId),
             source: String(edge.startNodeId),
             target: String(edge.endNodeId)
          }
@@ -424,6 +436,75 @@ function CommdBranch() {
 
 
 
+   function saveGraphFamily() {
+      const cy = cyInstance;
+      let familyNames = [];
+      axios.get('http://localhost:5000/api/v0/getFamilyNames').then(response => {
+         familyNames = response.data;
+
+         familyName.current = String(familyNames.length + 2);
+         console.log("NAMES: ", familyNames);
+         snapshot.current = 1;
+         creationDate.current = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+         const nodes = cy.nodes();
+         const nodePositions = cy.nodes().map(node => ({
+            id: node.id(),
+            position: node.position()
+         }));
+         const edges = cy.edges();
+         const nodeData = nodes.map(node => ({
+            nodeId: node.data('id'),
+            familyId: familyName.current,
+            snapshotId: snapshot.current,
+            serviceNum: node.data('name'),
+            level: node.data('level'),
+            driverQualWheel: node.data('driverQualWheel'),
+            driverQualMS: node.data('driverQualMS'),
+            course: node.data('course'),
+            forceTest: node.data('forceTest'),
+            firstAid: node.data('firstAid')
+         }));
+         for (let i = 0; i < nodeData.length; i++) {
+            for (let j = 0; j < nodePositions.length; j++) {
+               if (nodeData[i].nodeId === nodePositions[j].id) {
+                  nodeData[i].x = nodePositions[j].position.x;
+                  nodeData[i].y = nodePositions[j].position.y;
+               }
+            }
+         }
+         const edgeData = edges.map(edge => ({
+            edgeId: edge.id(),
+            familyId: familyName.current,
+            snapshotId: snapshot.current,
+            startNodeId: edge.data('source'),
+            endNodeId: edge.data('target')
+         }));
+
+
+
+
+         const resp = axios.post('http://localhost:5000/api/v0/createFamily', {
+            familyId: familyName.current,
+            nodes: nodeData,
+            edges: edgeData,
+            snapshotId: snapshot.current,
+            creationDate: creationDate.current
+         }).then(response => {
+            resetGraph();// make the reset wait for everything to be stored
+            //refreshSavedSection();
+            //window.location.reload();
+         }).catch(error => {
+            console.error(error);
+         });
+
+         // resetGraph();
+      })
+
+
+   }
+
+
 
 
 
@@ -431,23 +512,26 @@ function CommdBranch() {
    async function fetchTreeData() {
       let treeData;
       try {
-         if (familyName.current === "")
+         if (familyName.current === "") {
             familyName.current = "1";
+         }
          const response = await axios.get('http://localhost:5000/api/v0/getLastSnap', { params: { familyId: familyName.current } });
          treeData = response.data;//JSON.stringify(response.data, null, 2)
-
+         console.log(treeData)
       } catch (err) {
          console.log(err)
          alert("Error while retrieving tree data")
       }
-
+      // if (treeData == null) {
+      //    return [{ snapshotId: 1, familyId: "", creationDate: "" }, "", ""];
+      // }
       let nodeData;
       try {
          const response = await axios.get('http://localhost:5000/api/v0/findNodes', { params: { snapshotId: treeData.snapshotId } });
          nodeData = response.data;//JSON.stringify(res.data, null, 2)
       } catch (err) {
          console.log(err)
-         alert("Error while retrieving node data")
+         alert("The retrieved tree has no nodes")
       }
 
 
@@ -457,7 +541,7 @@ function CommdBranch() {
          edgeData = response.data;//JSON.stringify(res.data, null, 2)
       } catch (err) {
          console.log(err)
-         alert("Error while retrieving edge data")
+         alert("The retrieved tree has no edges")
       }
 
       return [treeData, nodeData, edgeData];
@@ -493,14 +577,27 @@ function CommdBranch() {
 
 
 
+
+
+   function loadFamily(familyId) {
+      familyName.current = familyId;
+      resetGraph();
+   }
+
+
+
    return (
-
-      ReactDOM.createPortal(
-         <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} recenter={recenter} saveGraph={saveGraph} applyFilter={applyFilter} />,
-         document.body // Or another location in the DOM, like a specific div
-      )
-
-   );
+      <div>
+         {ReactDOM.createPortal(
+            <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} recenter={recenter} saveGraph={saveGraph} applyFilter={applyFilter} saveGraphFamily={saveGraphFamily} />,
+            document.body // Or another location in the DOM, like a specific div
+         )}
+         {ReactDOM.createPortal(
+            <SavedSection loadFamily={loadFamily} />,
+            document.body
+         )}
+      </div>
+   );//onRefresh={setRefreshSavedSection}
 };//End of CommdBranch function
 
 
@@ -525,7 +622,7 @@ function updateEdge(node, edge, cy) {
       (positionVectorTarget.y - postiionVectorOwn.y) * (positionVectorTarget.y - postiionVectorOwn.y)
 
    );
-   console.log(distance);
+   //console.log(distance);
    if (distance > SEPARATION_DIST_LOW && distance < SEPARATION_DIST_HIGH) {
       edge.data('line-color', 'rgba(255, 0, 0, 0.5)');
    } else if (distance > SEPARATION_DIST_HIGH) {

@@ -1,6 +1,7 @@
 [
     {
         "nodeId": 1,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0000",
         "position": "test",
@@ -15,6 +16,7 @@
     },
     {
         "nodeId": 2,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0001",
         "position": "test",
@@ -29,6 +31,7 @@
     },
     {
         "nodeId": 3,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0002",
         "position": "test",
@@ -43,6 +46,7 @@
     },
     {
         "nodeId": 4,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0003",
         "position": "test",
@@ -57,6 +61,7 @@
     },
     {
         "nodeId": 5,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0004",
         "position": "test",
@@ -71,6 +76,7 @@
     },
     {
         "nodeId": 6,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0005",
         "position": "test",
@@ -85,6 +91,7 @@
     },
     {
         "nodeId": 7,
+        "familyId": 1,
         "snapshotId": 2,
         "serviceNum": "X0006",
         "position": "test",
@@ -96,5 +103,20 @@
         "course": true,
         "forceTest": false,
         "firstAid": false
+    },
+    {
+        "nodeId": 1,
+        "familyId": 2,
+        "snapshotId": 1,
+        "serviceNum": "X1111",
+        "position": "test",
+        "description": "test",
+        "upEdgeID": 6,
+        "level": 1,
+        "driverQualWheel": true,
+        "driverQualMS": true,
+        "course": true,
+        "forceTest": true,
+        "firstAid": true
     }
 ]

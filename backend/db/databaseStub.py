@@ -57,6 +57,7 @@ class DatabaseStub:
         familyIDs = []
         for family in self.treeFamilyTable:
             familyIDs.append(family["id"])
+        print("Family IDs: ", familyIDs)
         return familyIDs
 
     def getSnapshotIDsforFam(self, id):
@@ -70,6 +71,12 @@ class DatabaseStub:
             for snapshot in self.snapshotTable:
                 if str(snapshot["snapshotId"]) == str(id):
                     return snapshot
+                
+    def getFamilyNames(self):
+        familyNames = []
+        for family in self.treeFamilyTable:
+            familyNames.append(family["familyName"])
+        return familyNames
 
 
 
@@ -80,7 +87,7 @@ class DatabaseStub:
 
     def postSnapshot(self, snapshot):
         self.snapshotTable.append(snapshot)
-        print("SNAPSHOTS: ", self.snapshotTable)
+        #print("SNAPSHOTS: ", self.snapshotTable)
         return snapshot
 
     def postNode(self,node):

@@ -6,12 +6,12 @@
     padding: 10px;
     position: absolute;
     /* Change to fixed for screen-relative positioning */
-    top: 55%;
+    top: 60%;
     right: 20px;
     transform: translateY(-50%);
     background-color: #333;
     width: 10%;
-    height: 75%;
+    height: 65%;
     z-index: 10;
     /* Ensure it's above other elements */
 }
