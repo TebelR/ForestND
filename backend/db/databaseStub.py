@@ -80,6 +80,7 @@ class DatabaseStub:
 
     def postSnapshot(self, snapshot):
         self.snapshotTable.append(snapshot)
+        print("SNAPSHOTS: ", self.snapshotTable)
         return snapshot
 
     def postNode(self,node):

@@ -42,16 +42,18 @@ def getLastSnap():
     familyId = request.args.get('familyId')
     # print("Retrieving last snapshot for familyId " + familyId)
     snapshots = db.getSnapshots(familyId)
+    
     #now get the snapshot with the most recent creationDate
     targetId = "0"
     maxDate = datetime.strptime("0001-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
     for snapshot in snapshots:
         comparableDate = datetime.strptime(snapshot["creationDate"], '%Y-%m-%d %H:%M:%S')
+       # print("Comparing " + str(comparableDate) + " to " + str(maxDate))
         if(comparableDate > maxDate):
             targetId = str(snapshot["snapshotId"])
             maxDate = comparableDate
     snapshotId = targetId
-
+   #print("Returning snapshotId " + snapshotId) 
     output = jsonify(db.getSnapshot(snapshotId))
 
     return output
@@ -98,13 +100,14 @@ def createSnapshot():
             edge["snapshotId"] = snapshotId
 
         snapshot = {"snapshotId": snapshotId, "familyId": familyId, "creationDate": creationDate}
+        
         db.postSnapshot(snapshot)
 
         for node in nodes:
             db.postNode(node)
         for edge in edges:
             db.postEdge(edge)
-            print("Posting edge: " + str(edge))
+            # print("Posting edge: " + str(edge))
         
         return jsonify({"success": "Snapshot created"}), 200
 
