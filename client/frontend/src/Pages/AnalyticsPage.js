@@ -7,7 +7,8 @@ import ARR from '../components/profileTabPage/ARR';
 import userPhoto from '../assets/profile.png';
 import SearchBar from '../components/SearchBar';
 import Courses from '../components/profileTabPage/Courses';
-import '../Styles/ProfilePage.css';
+import FeedbackNotes from '../components/analyticsTabPage/FeedbackNote';
+import '../Styles/AnalyticsPage.css';
 
 
 const data = {
@@ -98,78 +99,24 @@ function AnalyticsPage() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'Profile':
+      case 'Feedback Notes':
         return (
-          <div className='content'>
-            <UserProfile 
-              status={data.status}
-              userPhoto={userPhoto}
-              rank={data.rank}
-              dob={data.dob}
-              Fname={data.name}
-              Lname={data.name}
-              Mname={data.name}
-              serviceNum={data.serviceNum}
-              phone={data.phone}
-              email={data.email} 
-              address={data.address}
-            />
+          <div className='content2'>
+            <FeedbackNotes />
           </div>
         );
-      case "ARR's":
-        return <div className='content'>
-          <ARR 
-          columns={
-            arrcolumns
-          }
-          rows={
-            arrrows
-          }
-          />
+      case "MAP":
+        return <div className='content2'>
+         Map
         </div>;
-      case 'Qualifications':
-        return <div className='content'> 
-        <Qualifications  
-        columns={
-          qualscolumns
-        }
-        rows={
-          qualsrows
-        }
-        />
+      case 'Job Description':
+        return <div className='content2'> 
+        Job Description
         </div>;
-      case 'Courses':
-        return <div className='content'>
-          <Courses 
-          columns={
-            courseColumns
-          }
-          rows={
-            courseRows
-          }
-          />
+      case 'RER/PDR':
+        return <div className='content2'>
+        RER/PDR
         </div>;
-      case 'PaCE':
-        return <div className='content'>
-          <PaCE 
-          columns={
-            columns
-          }
-          rows={
-            rows
-          }
-          />
-        </div>;
-        case 'Employment':
-          return <div className='content'>
-            <Employment
-              unit={data.unit}
-              Unit_UIC={data.Unit_UIC}
-              Trade={data.Trade}
-              MOSID={data.MOSID}
-              Position={data.Position}
-              />
-          </div>;
       default:
         return <div>Select a tab</div>;
     }
@@ -179,13 +126,13 @@ function AnalyticsPage() {
     <div className='container'>
       <SearchBar />
       <div className='header'>
-        <h1 className='title'>{data.position}</h1>
+        <h1 className='title2'>{data.position}</h1>
       </div>  
       <div className='tabs'>
         <ul>
-          {['Profile', "ARR's", 'Employment','Qualifications', 'Courses', 'PaCE'].map(tab => (
-            <li key={tab} className={activeTab === tab ? 'active' : ''} onClick={() => setActiveTab(tab)}>
-              <a href="#">{tab}</a>
+          {['Feedback Notes', "MAP",'Job Description', 'RER/PDR'].map(atab => (
+            <li key={atab} className={activeTab === atab ? 'active' : ''} onClick={() => setActiveTab(atab)}>
+              <a href="#">{atab}</a>
             </li>
           ))}
         </ul>
