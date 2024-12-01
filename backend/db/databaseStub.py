@@ -3,6 +3,8 @@
 # It runs on a lot of assumptions and hope
 
 import json
+import sys
+import os
 nodeTable = []
 edgeTable = []
 treeFamilyTable = []
@@ -10,19 +12,21 @@ snapshotTable = []
 
 class DatabaseStub:
     def __init__(self):
-        with open("db/nodeTable.json") as f:
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+
+        with open(os.path.join(base_path,"db/nodeTable.json")) as f:
             self.nodeTable = json.load(f)
 
-        with open("db/edgeTable.json") as f:
+        with open(os.path.join(base_path,"db/edgeTable.json")) as f:
             self.edgeTable = json.load(f)
 
-        with open("db/treeFamilyTable.json") as f:
+        with open(os.path.join(base_path,"db/treeFamilyTable.json")) as f:
             self.treeFamilyTable = json.load(f)
 
-        with open("db/snapshotTable.json") as f:
+        with open(os.path.join(base_path,"db/snapshotTable.json")) as f:
             self.snapshotTable = json.load(f)
 
-
+        
 
 
 

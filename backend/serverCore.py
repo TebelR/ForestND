@@ -173,5 +173,5 @@ def shutdown():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, host='127.0.0.1', port=5000)#configure port
+    app.run(debug=False, threaded=True, host='127.0.0.1', port=5000)#configure port
     print("Server started")

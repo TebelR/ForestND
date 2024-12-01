@@ -1,13 +1,36 @@
-# Unit Organization Module
+# Unit Organization Module - Tree ND
+
+# Running the project
 
 
 # Project Overview
 
-Remodelled monitor mass
+Tree ND takes away some of Monitor Mass' functionality to lighten the mental load on users. The primary purpose of Tree ND is to provide a better visualisation of the user organization's structure, along with its resources and capabilities.
+
+Those with authority, may swiftly generate new formations that include relevant members. These formations are highly fluid and are easily saved and editted.
+
+The personal information module was also derived from MM, but with a big addition of members being able to modify some of their own data in regards to qualifications, certificate expiry dates and other data. This data still needs to be verified by the CoC, but its presence alone can help commanders gain bette rsituational awareness in a much shorter period of time.
 
 
+# Technical Overview
 
-# How to get started
+This project has two components - front and back.
+The front end is developed in React.
+The most technically complex part of the client is the graph that can be seen on the home page.
+We used the Cytoscape library to make it work and have added a lot of additional functionality between the graph and neighboring components.
+
+The back end is developed using flask-cors in Python. The back end at the moment is a simple Python server that provides clients with API. The server is multithreaded, and communicates with a stub database that stores its data in JSON files.
+
+The built python backend is running the server on localhost:5000
+The front end is running on localhost:3000
+
+Python version: 3.11.9
+
+# Road Map
+
+The app has a lot of potential for processing data and delivering statistics to those in need. Because the client relies on an API, it can be easily modified to work with the existing army app.
+
+# How to get started (to code)
 
 Download VSCode.
 Download Pthon from here: https://www.python.org
@@ -20,3 +43,12 @@ At the moment, the server can be initialized on localHost by running: python ser
 Download NodeJS and install it wherever you want
 type cd client/frontend
 and run npm start to launch the client
+
+
+# Build
+
+pyinstaller --onefile --add-data "db/nodeTable.json:db" --add-data "db/edgeTable.json:db" --add-data "db/treeFamilyTable.json:db" --add-data "db/persTable.json:db" --add-data "db/snapshotTable.json:db" --name "ForestND_Server" serverCore.py
+
+^^^This sends the python executable into /dist
+
+
