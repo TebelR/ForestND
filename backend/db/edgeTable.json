@@ -1,36 +1,36 @@
 [
     {
-        "edgeID": 1,
+        "edgeID": "1-2",
         "snapshotID": 2,
         "startNodeID": 1,
         "endNodeID": 2
     },
     {
-        "edgeID": 2,
+        "edgeID": "2-3",
         "snapshotID": 2,
         "startNodeID": 2,
         "endNodeID": 3
     },
     {
-        "edgeID": 3,
+        "edgeID": "3-4",
         "snapshotID": 2,
         "startNodeID": 3,
         "endNodeID": 4
     },
     {
-        "edgeID": 4,
+        "edgeID": "3-5",
         "snapshotID": 2,
         "startNodeID": 3,
         "endNodeID": 5
     },
     {
-        "edgeID": 5,
+        "edgeID": "3-6",
         "snapshotID": 2,
         "startNodeID": 3,
         "endNodeID": 6
     },
     {
-        "edgeID": 6,
+        "edgeID": "2-7",
         "snapshotID": 2,
         "startNodeID": 2,
         "endNodeID": 7

@@ -3,21 +3,28 @@ import React, { useEffect } from 'react';
 import cytoscape from 'cytoscape';
 import "../Styles/commdBranch.css";
 import axios from 'axios';
+import { useState } from 'react';
+import GraphTools from '../components/GraphTools';
+import ReactDOM from 'react-dom';
 
 const SEPARATION_DIST_LOW = 100;
 const SEPARATION_DIST_HIGH = 150;
 
 
-const CommdBranch = () => {
+function CommdBranch() {
 
    //put graph data in state
-   const [formattedNodes, setFormattedNodes] = React.useState([]);
-   const [formattedEdges, setFormattedEdges] = React.useState([]);
+   //this is done because of async nature of fetching data
+   const [formattedNodes, setFormattedNodes] = useState([]);
+   const [formattedEdges, setFormattedEdges] = useState([]);
 
+   const [cyInstance, setCyInstance] = useState(null);
+   const [createEdgeMode, setCreateEdgeMode] = useState(false);
+   const [sourceNode, setSourceNode] = useState(null);
+   const [targetNode, setTargetNode] = useState(null);
 
 
    //fetch graph data on first render
-
    useEffect(() => {
       async function fetchData() {
          const graphData = await fetchTreeData();
@@ -49,104 +56,132 @@ const CommdBranch = () => {
          //console.log(formattedNodes, formattedEdges);
       }
 
+
+
       //actual function call
       fetchData();
+      if (formattedNodes.length > 0 && formattedEdges.length > 0) {
+         if (document.querySelector('.commdBranch') === null) return;
+         buildTree(formattedNodes, formattedEdges);
+
+      }
    }, []);
 
 
-   //Second render of the graph actually builds the graph
-   useEffect(() => {
-      if (formattedNodes.length > 0 && formattedEdges.length > 0) {
-         document.querySelector('.commdBranch').innerHTML = "";
-         let cy = cytoscape({
-            container: document.querySelector('.commdBranch'),
-            elements: [
-               ...formattedNodes,
-               ...formattedEdges
-            ],
-            style: [
-               {
-                  selector: 'node',
-                  style: {
-                     'background-color': '#aaaaaa',
-                     'label': 'data(name)',
-                     'text-valign': 'center',
-                     'text-halign': 'center',
-                     'text-wrap': 'wrap',
-                     'text-max-width': '100px',
-                     'transition-property': 'background-color',
-                     'transition-duration': '0.5s',
-                     'transition-timing-function': 'ease-in-out',
-                     'width': '30%',
-                     'height': '30%',
-                     'font-size': '10%',
-                     'color': '#000000'
-                  }
-               },
-               {
-                  selector: 'edge',
-                  style: {
-                     'curve-style': 'taxi',
-                     'target-arrow-shape': 'none',
-                     'line-color': '#ffffff',
-                     'target-arrow-color': '#666',
-                     'taxi-direction': 'vertical',
-                     'source-endpoint': '0% 0%',
-                     'target-endpoint': '0% 50%',
-                     'taxi-turn': 20,
-                  }
-               },
-               {
-                  selector: '.focused',
-                  style: {
-                     'background-color': '#9003fc',
-                     'line-color': '#9003fc', // Highlighted edge color
-                     'target-arrow-color': '#9003fc', // Highlighted arrow color
-                     'border-width': '3px', // Additional visual cue for nodes
-                     'border-color': '#9003fc',
-                  }
-               }
-            ],
-            layout: {
-               name: 'breadthfirst',
 
-               fit: true,
-               directed: true,
-               padding: 40,
-               circle: false,
-               // grid: true, // whether to create an even grid into which the DAG is placed (circle:false only)
-               // rows: 6,
-               spacingFactor: 1.25,
-               avoidOverlap: true,
-               nodeDimensionsIncludeLabels: true,
-               roots: parseInt(getRootNode(formattedNodes)), // the roots of the trees - in this case this is the node with the highest level
-               // depthSort: function (a, b) {
-               //    console.log(a.data('level'), b.data('level'))
-               //    return a.data('level') - b.data('level');
-               // },
-               animate: true,
-               animationDuration: 200,
-               animationEasing: 'ease-out-circ',
-               transform: function (node, position) {
-                  position.y = node.data('level') * 1000;
-                  return position;
+
+
+
+   function buildTree(formattedNodes, formattedEdges) {
+      let cy = cytoscape({
+         container: document.querySelector('.commdBranch'),
+         elements: [
+            ...formattedNodes,
+            ...formattedEdges
+         ],
+         style: [
+            {
+               selector: 'node',
+               style: {
+                  'background-color': '#aaaaaa',
+                  'label': 'data(name)',
+                  'text-valign': 'center',
+                  'text-halign': 'center',
+                  'text-wrap': 'wrap',
+                  'text-max-width': '100px',
+                  'transition-property': 'background-color',
+                  'transition-duration': '0.5s',
+                  'transition-timing-function': 'ease-in-out',
+                  'width': '30%',
+                  'height': '30%',
+                  'font-size': '10%',
+                  'color': '#000000'
+               }
+            },
+            {
+               selector: 'edge',
+               style: {
+                  'curve-style': 'taxi',
+                  'target-arrow-shape': 'none',
+                  'line-color': '#ffffff',
+                  'target-arrow-color': '#666',
+                  'taxi-direction': 'vertical',
+                  'source-endpoint': '0% 0%',
+                  'target-endpoint': '0% 50%',
+                  'taxi-turn': 20,
+               }
+            },
+            {
+               selector: '.focused',
+               style: {
+                  'background-color': '#9003fc',
+                  'line-color': '#9003fc', // Highlighted edge color
+                  'border-width': '3px', // Additional visual cue for nodes
+                  'border-color': '#9003fc',
+               }
+            },
+            {
+               selector: '.temporary-node',
+               style: {
+                  'display': 'none',
+               }
+            },
+            {
+               selector: '.temporary-edge',
+               style: {
+                  'curve-style': 'taxi',
+                  'target-arrow-shape': 'none',
+                  'line-color': '#9003fc',
+                  'target-arrow-color': '#666',
+                  'taxi-direction': 'vertical',
+                  'source-endpoint': '0% 0%',
+                  'target-endpoint': '0% 50%',
+                  'taxi-turn': 20,
                }
             }
-         });
+         ],
+         layout: {
+            name: 'breadthfirst',
 
+            fit: true,
+            directed: true,
+            padding: 40,
+            circle: false,
+            spacingFactor: 1.25,
+            avoidOverlap: true,
+            nodeDimensionsIncludeLabels: true,
+            roots: parseInt(getRootNode(formattedNodes)),
+            animate: true,
+            animationDuration: 200,
+            animationEasing: 'ease-out-circ',
+            transform: function (node, position) {
+               position.y = node.data('level') * 1000;
+               return position;
+            }
+         }
+      });
+      setCyInstance(cy);
+   }
+
+
+
+
+   //different render of the graph that will wait for tree data to be fetched
+   useEffect(() => {
+      if (formattedNodes.length > 0 && formattedEdges.length > 0) {
+         if (document.querySelector('.commdBranch') === null) return;
+
+         if (!cyInstance) return;
+
+         const cy = cyInstance;
          cy.on('drag', 'node', function (event) {
             const node = event.target;
             const position = node.position();
 
-            //const snappedY = Math.round(position.y / 100) * 100; // 100px row spacing
-            // let displacementY = node.position().y - event.target._private.position.y;
-            // let displacementX = node.position().x - event.target._private.position.x;
-            // Update node position in real-time
-            node.position({ x: position.x, y: position.y });
             let outgoingEdges = node.outgoers();
             if (outgoingEdges.length > 0)
                updateEdge(node, outgoingEdges[0], cy);
-            // node.velocity({ x: displacementX, y: displacementY });
+
          });
 
          cy.on('dragfree', 'node', function (event) {
@@ -194,24 +229,90 @@ const CommdBranch = () => {
             }
          });
 
+         setCyInstance(cy);
 
          return () => {
             cy.destroy();
          }
       }
-   }, [formattedNodes, formattedEdges]);
+   }, [cyInstance]);
 
 
 
 
+
+
+
+   useEffect(() => {
+      if (!cyInstance) return;
+
+      const handleMouseDown = (event) => {
+         if (!createEdgeMode || !event.target.isNode()) return;
+         if (sourceNode && event.target === sourceNode) {
+            setCreateEdgeMode(false);
+            return;
+         }
+         if (!sourceNode)
+            setSourceNode(event.target);
+
+         if (sourceNode && event.target !== sourceNode) {
+            setTargetNode(event.target);
+            if (sourceNode.level < event.target.level) {
+               cyInstance.add({
+                  group: 'edges',
+                  data: { id: `${event.target.id()}-${sourceNode.id()}`, source: event.target.id(), target: sourceNode.id() }
+               })
+            } else {
+               cyInstance.add({
+                  group: 'edges',
+                  data: { id: `${sourceNode.id()}-${event.target.id()}`, source: sourceNode.id(), target: event.target.id() }
+               })
+            }
+
+            setCreateEdgeMode(false);
+            setSourceNode(null);
+            setTargetNode(null);
+         }
+      };
+
+
+      cyInstance.off('drag', 'node', 'dragfree', 'node');
+      cyInstance.on('mousedown', 'node', handleMouseDown);
+
+
+      return () => {
+         cyInstance.off('mousedown', 'node', handleMouseDown);
+      };
+
+
+   }, [cyInstance, createEdgeMode, sourceNode, targetNode]);
+
+
+
+   const resetGraph = () => {
+      if (cyInstance)
+         cyInstance.destroy();
+
+      setCyInstance(null);
+
+      try {
+         buildTree(formattedNodes, formattedEdges);
+      } catch (err) {
+         alert("Refreshing too fast");
+      }
+   };
 
    return (
-      <div className='commdBranch'>
+      ReactDOM.createPortal(
+         <GraphTools setCreateEdgeMode={setCreateEdgeMode} resetGraph={resetGraph} />,
+         document.body // Or another location in the DOM, like a specific div
+      )
+   );
+};//End of CommdBranch function
 
-      </div>
 
-   )
-};
+
+
 
 //Checks for the posibility of creating a new edge with the nearest neighbor node
 function lookForEdge(node, neighBors, cy) {
@@ -219,7 +320,12 @@ function lookForEdge(node, neighBors, cy) {
 }
 
 
-//Checks if node is pulled too far away and deletes the edge if needed
+
+
+
+
+
+//Checks if node is pulled too far away and deletes the edge if needed - this logic is still weird
 function updateEdge(node, edge, cy) {
    let connectedID = edge.data('target');
    let connectedNode = cy.getElementById(connectedID);
@@ -241,6 +347,12 @@ function updateEdge(node, edge, cy) {
 
 }
 
+
+
+
+
+
+
 function getNearestNode(nodes, x, y) {
    let nearestNode = null;
    let minDistance = Infinity;
@@ -254,6 +366,12 @@ function getNearestNode(nodes, x, y) {
    }
    return nearestNode;
 }
+
+
+
+
+
+
 
 
 //returns the node with the highest level
@@ -270,6 +388,12 @@ function getRootNode(nodes) {
    }
    return nodes[rootIndex].data.id;
 }
+
+
+
+
+
+
 
 //This talks to the backend through API calls
 async function fetchTreeData() {
@@ -304,6 +428,10 @@ async function fetchTreeData() {
 
    return [treeData, nodeData, edgeData];
 }
+
+
+
+
 
 
 export default CommdBranch;
