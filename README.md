@@ -16,11 +16,7 @@ A copy of build files exists in /hackBuilds upon opening the project
 
 # Project Overview
 
-Tree ND takes away some of Monitor Mass' functionality to lighten the mental load on users. The primary purpose of Tree ND is to provide a better visualisation of the user organization's structure, along with its resources and capabilities.
-
-Those with authority, may swiftly generate new formations that include relevant members. These formations are highly fluid and are easily saved and editted.
-
-The personal information module was also derived from MM, but with a big addition of members being able to modify some of their own data in regards to qualifications, certificate expiry dates and other data. This data still needs to be verified by the CoC, but its presence alone can help commanders gain bette rsituational awareness in a much shorter period of time.
+This project was developed in 34 hours as part of a hackathon. For safety purposes, some components and information has been removed from this project.
 
 
 # Technical Overview
@@ -40,21 +36,6 @@ Python version: 3.11.9
 # Road Map
 
 The app has a lot of potential for processing data and delivering statistics to those in need. Because the client relies on an API, it can be easily modified to work with the existing army app.
-
-# How to get started (to code)
-
-Download VSCode.
-Download Python from here: https://www.python.org
-Open a new terminal in VSCode and run: pip install flask flask-cors
-
-To run python files, type: python nameofFile.py
-At the moment, the server can be initialized on localHost by running: python serverCore.py
-
-
-Download NodeJS and install it wherever you want
-type cd client/frontend
-and run npm start to launch the client
-
 
 # Build
 
